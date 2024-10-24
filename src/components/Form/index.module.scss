@@ -1,0 +1,14 @@
+.form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  
+    &.small {
+      gap: 4px;
+    }
+    &.medium {
+      gap: 15px;
+    }
+  }
+  

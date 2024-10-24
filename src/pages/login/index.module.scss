@@ -1,0 +1,26 @@
+
+.login_container {
+    display: flex;
+    // margin: 0p!important;
+    // background-repeat: no-repeat;
+    // background-size: cover;
+    // background-position: center top -100px;
+    // width: 1000px;
+    height: 100vh;
+    background-image: url('/img/loginbg.jpg'); 
+    background-repeat: no-repeat; 
+    background-position: center top -80px;
+    background-size: cover; 
+    align-items: center;
+    justify-content: center;
+}
+
+.flex-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.error {
+    margin-bottom: 10px!important;
+}
