@@ -217,7 +217,7 @@ const AppRoutes = () => {
           }
         />
 
-        {/* Các route liên quan đến admin chi tiết user */}
+        {/* Các route liên quan đến admin chi tiết useccr */}
         <Route
           path="/admin/student/:id"
           element={
