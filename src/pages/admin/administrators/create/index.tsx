@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
-import { adminNavigation } from "../../../states/adminNavigation";
+import { adminNavigation } from "../../../../states/adminNavigation";
 import { useRecoilState } from "recoil";
 
-const AdminAdministrator = () => {
+const AdminAdministratorsCreate = () => {
   const [itemId, setAdminNavigation] = useRecoilState(adminNavigation);
 
   useEffect(() => {
@@ -10,9 +10,9 @@ const AdminAdministrator = () => {
   }, []);
   return (
     <div>
-      <h1>/admin/administrator/:id</h1>
+      <h1>/admin/administrators/create</h1>
     </div>
   );
-}
+};
 
-export default AdminAdministrator;
+export default AdminAdministratorsCreate;

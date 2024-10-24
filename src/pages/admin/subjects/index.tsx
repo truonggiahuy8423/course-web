@@ -2,17 +2,17 @@ import React, { useEffect } from "react";
 import { adminNavigation } from "../../../states/adminNavigation";
 import { useRecoilState } from "recoil";
 
-const AdminStudents = () => {
+const AdminSubjects = () => {
   const [itemId, setAdminNavigation] = useRecoilState(adminNavigation);
 
   useEffect(() => {
-    setAdminNavigation(4);
+    setAdminNavigation(2);
   }, []);
 
   return (
     <div>
-      <h1>/admin/students</h1>
+      <h1>/admin/subjects</h1>
     </div>
   );
 }
-export default AdminStudents;
+export default AdminSubjects;

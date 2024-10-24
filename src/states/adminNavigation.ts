@@ -5,6 +5,6 @@ const { persistAtom } = recoilPersist();
 
 export const adminNavigation = atom<number>({
     key: "adminNavigation",
-    default: 0,
+    default: 1,
     effects_UNSTABLE: [persistAtom],
   });
