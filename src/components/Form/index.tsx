@@ -12,7 +12,7 @@ type Props = {
 
 export const Form = (props: Props) => {
   const { onSubmit, gap, children } = props;
-  const formClass = classNames(styles.form, styles[gap]);
+  const formClass = classNames(styles.form, styles[String(gap)]);
 
   return (
     <form onSubmit={onSubmit} className={formClass}>

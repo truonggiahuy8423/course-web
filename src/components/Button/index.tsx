@@ -41,7 +41,7 @@ export const Button = forwardRef<HTMLButtonElement, Props>((props, ref) => {
     <button
       type={type}
       onClick={onClick}
-      className={classNames(className, styles.button, styles[color], {
+      className={classNames(className, styles.button, styles[String(color)], {
         [styles.fullWidth]: fullWidth,
         [styles.mini]: mini,
         [styles.bold]: bold,

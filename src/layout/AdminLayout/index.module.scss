@@ -1,7 +1,10 @@
 @import "../../common/common-variable.scss";
 
 .container {
-  padding-left: $navigation-width;
+  padding-left: calc($navigation-width + 10px);
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-right: 10px;
 }
 
 .leftNav {

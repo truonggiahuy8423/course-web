@@ -5,6 +5,7 @@ import Button from "../../../components/Button";
 import AdminNavigation from "../../../components/AdminNavigation";
 import { useRecoilState } from "recoil";
 import { adminNavigation } from "../../../states/adminNavigation";
+import Pagination from "../../../components/Pagination";
 
 const AdminCourses = () => {
   // const location = useLocation();
@@ -20,6 +21,7 @@ const AdminCourses = () => {
   return (
     <div>
       <h1>/admin/courses</h1>
+      <Pagination onChangePage={(page) => {}} pageCount={10} activePage={1}></Pagination>
     </div>
   );
 };
