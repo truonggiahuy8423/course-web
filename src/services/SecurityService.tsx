@@ -7,8 +7,8 @@ import { LoginResponse } from "../interfaces/Auth";
 import { LoginFormData } from "../pages/login";
 import { getRequest, postRequest } from "../routes/middleware/fetch";
 
-// const apiUrl = process.env.REACT_APP_API_URL;
-const apiUrl = "http://localhost:8080";
+const apiUrl = import.meta.env.VITE_API_URL;
+
 export const acquireAccessControl = async (
   accessControlRequest: AccessControlRequest,
 ): Promise<ApiResponse<AccessControlResponse>> => {
