@@ -164,12 +164,13 @@ const AdminCourses = () => {
       .then(async (res) => {
         setCourses(res.data.courses);
         setTotal(res.data.total);
-        toast.success("更新しました");
+        toast.success("Successful get courses");
         await new Promise((resolve) => setTimeout(resolve, 1000));
         setLoading(false);
       })
       .catch(async (e) => {
         console.log(e);
+        toast.error("Failed to get courses");
         await new Promise((resolve) => setTimeout(resolve, 1000));
         setLoading(false);
       });
