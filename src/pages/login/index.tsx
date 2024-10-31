@@ -110,7 +110,7 @@ const LoginPage = () => {
                   id="email"
                   type="text"
                   placeholder="Username(email)"
-                  autoComplete="false"
+                  autoComplete="true"
                   disabled={isLoading}
                   // Sử dụng nhiều quy tắc với trường rules
                   register={register("email", {
