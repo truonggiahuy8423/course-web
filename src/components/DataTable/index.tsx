@@ -10,8 +10,8 @@ import type { TablePaginationConfig } from "antd/es/table";
 import ComponentContainer from "../ComponentContainer";
 
 const sorterKey = {
-  ascend: "asc",
-  descend: "desc",
+  ascend: "ASC",
+  descend: "DESC",
 };
 
 export type ColumnsType<T> = {
@@ -50,9 +50,9 @@ const Table = <T extends Record<string, any>>(props: Props<T>) => {
     // Lấy `sorterField` từ column nếu nó tồn tại
     const sorterField = sorting?.column
       ? (sorting.column as ColumnsType<T>).sorterField
-      : "id";
+      : '1';
 
-    query.set("sort", sorterField || "id"); // Sử dụng `sorterField` hoặc 'id' nếu không có
+    query.set("sort", sorterField || '1'); // Sử dụng `sorterField` hoặc 'id' nếu không có
     const sorterOrder = (sorting?.order?.toString() || "ascend") as
       | "ascend"
       | "descend";
@@ -90,7 +90,7 @@ const Table = <T extends Record<string, any>>(props: Props<T>) => {
           },
         })}
       />
-      <ComponentContainer justifyContent="right" padding={{top: '10px'}}>
+      <ComponentContainer justifyContent="right" padding={{top: '14px', right: '40px'}}>
         <Pagination
           defaultCurrent={1}
           total={total}

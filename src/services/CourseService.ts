@@ -5,10 +5,10 @@ import { getRequest } from "../routes/middleware/fetch";
 
 const apiUrl = import.meta.env.VITE_API_URL;
 
-export const getCourses = async (params: any): Promise<ApiResponse<Course[]>> => {
+export const getCourses = async (params: any): Promise<ApiResponse<GetCoursesResponse>> => {
   const token = localStorage.getItem("token");
 
-  return getRequest<ApiResponse<Course[]>>({
+  return getRequest<ApiResponse<GetCoursesResponse>>({
     url: `${apiUrl}/get-courses`,
     headers: {
       "Content-Type": "application/json",

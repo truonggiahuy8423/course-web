@@ -13,9 +13,8 @@ import Table, { ColumnsType } from "../../../components/DataTable";
 import { getCourses } from "../../../services/CourseService";
 import { loadingState } from "../../../states/loading";
 import { set } from "react-hook-form";
-import { toast } from 'react-toastify';
+import { toast } from "react-toastify";
 import RowAction from "./components/RowAction";
-
 
 export type Lecturer = {
   lecturerId: number;
@@ -64,8 +63,9 @@ const AdminCourses = () => {
   const setLoading = useSetRecoilState(loadingState);
   const [itemId, setAdminNavigation] = useRecoilState(adminNavigation);
 
-  // useEffect(() => {
-  //   setAdminNavigation(1);
+  useEffect(() => {
+    setAdminNavigation(1);
+  }, []);
   //   const queryParams = new URLSearchParams(location.search);
   //   queryParams.set("page", defaultParams.page.toString());
   //   queryParams.set("pageSize", defaultParams.pageSize.toString());
@@ -83,17 +83,17 @@ const AdminCourses = () => {
     {
       title: "Course ID",
       dataIndex: "courseId",
-      sorterField: "courseId",
+      sorterField: "1",
       sorter: true,
     },
     {
       title: "Subject",
       dataIndex: "subject",
-      sorterField: "subjectName",
+      sorterField: "2",
       sorter: true,
       render: (subject) => {
         return `${subject.subjectId}-${subject.subjectName}`;
-      }
+      },
     },
     {
       title: "Lecturers",
@@ -108,7 +108,7 @@ const AdminCourses = () => {
     {
       title: "Start Date",
       dataIndex: "startDate",
-      sorterField: "startDate",
+      sorterField: "3",
       sorter: true,
       render: (startDate) => {
         return new Date(startDate).toLocaleDateString();
@@ -117,7 +117,7 @@ const AdminCourses = () => {
     {
       title: "End Date",
       dataIndex: "endDate",
-      sorterField: "endDate",
+      sorterField: "4",
       sorter: true,
       render: (endDate) => {
         return new Date(endDate).toLocaleDateString();
@@ -126,16 +126,19 @@ const AdminCourses = () => {
     {
       title: "Enrollment",
       dataIndex: "numberOfStudents",
-      sorterField: "numberOfStudents",
+      sorterField: "5",
       sorter: true,
     },
     {
       title: "",
       render: (_, record) => {
         return (
-          <RowAction course={record} afterDone={() => getCourseList()}></RowAction>
+          <RowAction
+            course={record}
+            afterDone={() => getCourseList()}
+          ></RowAction>
         );
-      }
+      },
     },
   ];
 
@@ -145,8 +148,10 @@ const AdminCourses = () => {
     const queryParams = new URLSearchParams(location.search);
     const page = queryParams.get("page") || "1";
     const pageSize = queryParams.get("pageSize") || "10";
-    const sort = queryParams.get("sort") || "courseId";
+    const sort = queryParams.get("sort") || "1";
     const sortDir = queryParams.get("sortDir") || "asc";
+
+    // console.log(queryParams);
 
     const params = {
       page: Number(page),
@@ -155,13 +160,11 @@ const AdminCourses = () => {
       sortDir,
     };
 
-
-
     getCourses(params)
       .then(async (res) => {
-        setCourses(res.data);
-        setTotal(res.data.length);
-        toast.success('更新しました');
+        setCourses(res.data.courses);
+        setTotal(res.data.total);
+        toast.success("更新しました");
         await new Promise((resolve) => setTimeout(resolve, 1000));
         setLoading(false);
       })
