@@ -3,12 +3,13 @@ import { adminNavigation } from "../../../states/adminNavigation";
 import { useRecoilState } from "recoil";
 import { GetAllSubjects } from "../../../services/SubjectService";
 import { Divider, Table } from "antd";
+import DataTable from "../courses/components/DataTable";
 
 
 const queryParams = new URLSearchParams(location.search);
 const page = queryParams.get("page") || "1";
 const pageSize = queryParams.get("pageSize") || "10";
-const sort = queryParams.get("sort") || "courseId";
+const sort = queryParams.get("sort") || "subjectId";
 const sortDir = queryParams.get("sortDir") || "asc";
 const params = {
   page: Number(page),
@@ -80,7 +81,7 @@ const data = (listSubject != null && listSubject.map((item:any) => {
     desctription: item.description
   }
 })) 
-
+console.log(data)
 
   return (
     <div>
