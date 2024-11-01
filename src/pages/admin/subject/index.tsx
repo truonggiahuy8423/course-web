@@ -9,6 +9,10 @@ const AdminSubject = () => {
     setAdminNavigation(2);
   }, []);
 
+useEffect(() =>{
+  
+})
+
   return (
     <div>
       <h1>/admin/subject/:id</h1>

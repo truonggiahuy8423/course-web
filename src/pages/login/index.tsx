@@ -82,7 +82,7 @@ const LoginPage = () => {
           <div style={{ borderBottom: "none" }}>
             <div
               style={{
-                display: "flex",
+                display: "flex",  
                 paddingTop: "20px",
                 justifyContent: "center",
                 marginTop: "0px",
