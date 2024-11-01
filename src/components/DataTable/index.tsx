@@ -20,6 +20,9 @@ export type ColumnsType<T> = {
   dataIndex?: string;
   sorterField?: string;
   render?: (value: any, record: T, index: number) => React.ReactNode;
+  filters?: { text: string; value: string }[];
+  onFilter?: (value: any, record: T) => boolean;
+  width?: string | number;
 };
 
 type Props<T> = {

@@ -9,12 +9,16 @@ import Pagination from "../../../components/Pagination";
 import DataTable from "./components/DataTable";
 import { styleText } from "util";
 import styles from "./index.module.scss";
+import { SearchOutlined, PlusOutlined } from "@ant-design/icons";
 import Table, { ColumnsType } from "../../../components/DataTable";
 import { getCourses } from "../../../services/CourseService";
 import { loadingState } from "../../../states/loading";
 import { set } from "react-hook-form";
 import { toast } from "react-toastify";
 import RowAction from "./components/RowAction";
+import ComponentContainer from "../../../components/ComponentContainer";
+import Input from "../../../components/Input";
+import SearchInput from "../../../components/SearchInput";
 
 export type Lecturer = {
   lecturerId: number;
@@ -60,7 +64,7 @@ const AdminCourses = () => {
   const [courses, setCourses] = useState<Course[]>([]);
   const navigate = useNavigate();
   const [total, setTotal] = useState(0);
-  const setLoading = useSetRecoilState(loadingState);
+  const setIsLoading = useSetRecoilState(loadingState);
   const [itemId, setAdminNavigation] = useRecoilState(adminNavigation);
 
   useEffect(() => {
@@ -85,6 +89,7 @@ const AdminCourses = () => {
       dataIndex: "courseId",
       sorterField: "1",
       sorter: true,
+      width: "8%",
     },
     {
       title: "Subject",
@@ -94,6 +99,22 @@ const AdminCourses = () => {
       render: (subject) => {
         return `${subject.subjectId}-${subject.subjectName}`;
       },
+      width: "20%",
+      // filters: [
+      //   { text: '1-ReactJS', value: '1-ReactJS' },
+      //   { text: '2-NextJS', value: '2-NextJS' },
+      //   { text: '3-JS', value: '3-JS' },
+      //   { text: '1-ReactJS', value: '1-ReactJS' },
+      //   { text: '2-NextJS', value: '2-NextJS' },
+      //   { text: '3-JS', value: '3-JS' },
+      //   { text: '1-ReactJS', value: '1-ReactJS' },
+      //   { text: '2-NextJS', value: '2-NextJS' },
+      //   { text: '3-JS', value: '3-JS' },
+      //   { text: '1-ReactJS', value: '1-ReactJS' },
+      //   { text: '2-NextJS', value: '2-NextJS' },
+      //   { text: '3-JS', value: '3-JS' },
+      // ],
+      // onFilter: (value, record) => record.subject.subjectName.includes(value),
     },
     {
       title: "Lecturers",
@@ -104,6 +125,7 @@ const AdminCourses = () => {
           .map((lecturer: Lecturer) => lecturer.username)
           .join(", ");
       },
+      // width: '',
     },
     {
       title: "Start Date",
@@ -113,6 +135,7 @@ const AdminCourses = () => {
       render: (startDate) => {
         return new Date(startDate).toLocaleDateString();
       },
+      width: "15%",
     },
     {
       title: "End Date",
@@ -122,12 +145,14 @@ const AdminCourses = () => {
       render: (endDate) => {
         return new Date(endDate).toLocaleDateString();
       },
+      width: "15%",
     },
     {
       title: "Enrollment",
       dataIndex: "numberOfStudents",
       sorterField: "5",
       sorter: true,
+      width: "8%",
     },
     {
       title: "",
@@ -139,11 +164,12 @@ const AdminCourses = () => {
           ></RowAction>
         );
       },
+      width: "10%",
     },
   ];
 
   const getCourseList = async () => {
-    setLoading(true);
+    setIsLoading(true);
 
     const queryParams = new URLSearchParams(location.search);
     const page = queryParams.get("page") || "1";
@@ -166,19 +192,52 @@ const AdminCourses = () => {
         setTotal(res.data.total);
         toast.success("Successful get courses");
         await new Promise((resolve) => setTimeout(resolve, 1000));
-        setLoading(false);
+        setIsLoading(false);
       })
       .catch(async (e) => {
         console.log(e);
         toast.error("Failed to get courses");
         await new Promise((resolve) => setTimeout(resolve, 1000));
-        setLoading(false);
+        setIsLoading(false);
       });
   };
 
   return (
     <div>
-      <h1>/admin/courses</h1>
+      <h3>Course List</h3>
+      <ComponentContainer justifyContent="right" padding={{ bottom: "10px" }}>
+        <>
+          {" "}
+          <SearchInput placeholder="Enter course ID" />
+          <Button
+            type="button"
+            color="primary"
+            style={{
+              borderRadius: "0px",
+              height: "40px",
+              // width: "40px",
+              marginRight: "4px",
+              // marginLeft: "1px",
+              padding: "6px 16px",
+            }}
+          >
+            <SearchOutlined />
+          </Button>
+          <Button
+            type="button"
+            color="primary"
+            style={{
+              borderRadius: "0px",
+              height: "40px",
+              // width: "40px",
+              padding: "6px 16px",
+            }}
+          >
+            <PlusOutlined />
+            {/* New Course */}
+          </Button>
+        </>
+      </ComponentContainer>
       <Table
         columns={columns}
         dataSource={courses}

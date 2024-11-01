@@ -42,7 +42,7 @@ const LoadingBar = () => {
         height: "2px",
         backgroundColor: "#1890ff",
         transition: "width 0.3s ease-in-out", // transition ngắn hơn cho cảm giác mượt
-        zIndex: 1000,
+        zIndex: 5000,
         display: isDisplay ? "block" : "none",
       }}
     />
