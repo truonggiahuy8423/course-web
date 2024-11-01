@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import { errorFilter } from "../../function/errorFilter";
 
 type GetRequestProps = {
   url: string;
@@ -7,7 +8,7 @@ type GetRequestProps = {
 };
 export async function getRequest<T>(props: GetRequestProps): Promise<T> {
   const { url, headers, params } = props;
-  const queryParams = new URLSearchParams(JSON.stringify(params)).toString();
+  const queryParams = new URLSearchParams(params as any).toString();
 
   return await fetch(`${url}${queryParams ? `?${queryParams}` : ``}`, {
     method: "GET",
@@ -18,12 +19,7 @@ export async function getRequest<T>(props: GetRequestProps): Promise<T> {
     .then(async (response) => {
       if (!response.ok) {
         const res = await response.json();
-        if (res?.error?.errorCode === 10002) {
-          window.location.href = "/login";
-        }
-        throw new Error(
-          res?.error.errorMessage?.toString() || response.status.toString()
-        );
+        errorFilter(res.error);
       }
       const res: Promise<T> = response.json();
       return res;
@@ -60,19 +56,10 @@ export async function postRequest<T, U>(
       console.log("post1");
 
       if (!response.ok) {
-        console.log(response);
         const res = await response.json();
-        console.log("post" + res);
-        if (res?.error?.errorCode === 10002) {
-          window.location.href = "/login";
-        }
-        throw new Error(
-          res?.error.errorMessage?.toString() || response.status.toString()
-        );
+        errorFilter(res.error);
       }
-      console.log("post2");
       const res: Promise<T> = response.json();
-      console.log("postRequest");
       return res;
     })
     .catch((e) => {
