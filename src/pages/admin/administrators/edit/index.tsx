@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { adminNavigation } from "../../../../states/adminNavigation";
-import { useRecoilState } from "recoil";
+
 import styles from "./index.module.scss";
-import { createAdmin } from "../../../../services/AdminService";
-import { useNavigate } from "react-router-dom";
-const AdminAdministratorsCreate = () => {
+import {
+  createAdmin,
+  editAdmin,
+  getAdmin,
+} from "../../../../services/AdminService";
+import { useNavigate, useParams } from "react-router-dom";
+const AdminAdministratorsEdit = () => {
   const [formData, setFormData] = useState({
     username: "",
     email: "",
@@ -14,6 +17,7 @@ const AdminAdministratorsCreate = () => {
     dob: "",
   });
   const navigate = useNavigate();
+  const { id } = useParams();
 
   const handleChange = (event: any) => {
     const { name, value, type, checked } = event.target;
@@ -26,7 +30,7 @@ const AdminAdministratorsCreate = () => {
   const handleSubmit = async (event: any) => {
     event.preventDefault();
     console.log("Form data:", formData);
-    createAdmin(formData)
+    editAdmin(String(id), formData)
       .then((res) => {
         console.log(res);
         if (res.status === 200) navigate("/admin/administrators");
@@ -36,11 +40,25 @@ const AdminAdministratorsCreate = () => {
       })
       .catch((error) => {});
   };
-
+  useEffect(() => {
+    if (id) {
+      getAdmin({ id }).then(async (res) => {
+        const data = await res.json();
+        setFormData({
+          username: data.username,
+          email: data.email,
+          phone: data.phone,
+          password: "",
+          gender: data.gender,
+          dob: "",
+        });
+      });
+    }
+  }, [id]);
   return (
     <div className={styles["form-container"]}>
       <div style={{ marginBottom: "50px" }}>
-        <h3>Create admin</h3>
+        <h3>Edit admin</h3>
       </div>
       <form onSubmit={handleSubmit}>
         <div className={styles["form-field"]}>
@@ -105,4 +123,4 @@ const AdminAdministratorsCreate = () => {
   );
 };
 
-export default AdminAdministratorsCreate;
+export default AdminAdministratorsEdit;
