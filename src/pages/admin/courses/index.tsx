@@ -19,34 +19,7 @@ import RowAction from "./components/RowAction";
 import ComponentContainer from "../../../components/ComponentContainer";
 import Input from "../../../components/Input";
 import SearchInput from "../../../components/SearchInput";
-
-export type Lecturer = {
-  lecturerId: number;
-  username: string;
-  email: string;
-  lastAccess: string;
-  gender: boolean;
-  avatar: string;
-};
-
-export type Subject = {
-  subjectId: number;
-  subjectName: string;
-  description: string;
-  createdDate: string;
-  updatedDate: string;
-};
-
-export type Course = {
-  courseId: number;
-  createdDate: string;
-  updatedDate: string;
-  startDate: string;
-  endDate: string;
-  lecturers: Lecturer[];
-  numberOfStudents: number;
-  subject: Subject;
-};
+import { Course, Lecturer } from "../../../interfaces/Course";
 
 export type Props = {
   data: Course[];

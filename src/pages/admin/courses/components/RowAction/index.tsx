@@ -8,8 +8,8 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { loadingState } from "../../../../../states/loading";
-import { Course } from "../..";
 import { useNavigate } from "react-router-dom";
+import { Course, GetCoursesResponse } from "../../../../../interfaces/Course";
 
 type Props = {
   course: Course;

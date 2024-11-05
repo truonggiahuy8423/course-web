@@ -8,6 +8,8 @@ import {
 import { useLocation, useNavigate } from "react-router-dom"; // Sử dụng React Router
 import type { TablePaginationConfig } from "antd/es/table";
 import ComponentContainer from "../ComponentContainer";
+import exp from "constants";
+import { set } from "react-hook-form";
 
 const sorterKey = {
   ascend: "ASC",
@@ -25,22 +27,33 @@ export type ColumnsType<T> = {
   width?: string | number;
 };
 
+export type paramsState = {
+  setPage:  React.Dispatch<React.SetStateAction<string>>
+  setPageSize:  React.Dispatch<React.SetStateAction<string>>
+  setSort:  React.Dispatch<React.SetStateAction<string>>
+  setSortDir:  React.Dispatch<React.SetStateAction<string>>
+  setSearch:  React.Dispatch<React.SetStateAction<string>>
+}
+
 type Props<T> = {
   columns: ColumnsType<T>[];
   dataSource: T[];
   total?: number;
   onClickRow?: (id: number) => void;
   rowKey?: string;
+  paramsState: paramsState
+  page: string
+  pageSize: string
 };
 
 const Table = <T, >(props: Props<T>) => {
-  const { columns, dataSource, total, onClickRow, rowKey } = props;
+  const { columns, dataSource, total, onClickRow, rowKey, paramsState, page, pageSize } = props;
 
   const location = useLocation();
   const navigate = useNavigate();
-  const query = new URLSearchParams(location.search);
-  const page = query.get("page") || "1";
-  const pageSize = query.get("pageSize") || "10";
+  // const query = new URLSearchParams(location.search);
+  // const page = query.get("page") || "1";
+  // const pageSize = query.get("pageSize") || "10";
 
   const handleTableChange = (
     _pagination: TablePaginationConfig,
@@ -55,26 +68,16 @@ const Table = <T, >(props: Props<T>) => {
       ? (sorting.column as ColumnsType<T>).sorterField
       : '1';
 
-    query.set("sort", sorterField || '1'); // Sử dụng `sorterField` hoặc 'id' nếu không có
+    paramsState.setSort(sorterField || '1');
     const sorterOrder = (sorting?.order?.toString() || "ascend") as
       | "ascend"
       | "descend";
-    query.set("sortDir", sorterKey[sorterOrder] || "desc");
-
-    navigate({
-      pathname: location.pathname,
-      search: query.toString(),
-    });
+      paramsState.setSortDir(sorterKey[sorterOrder]);
   };
 
   const onChangePagination = (page: number, pageSize: number) => {
-    query.set("page", page.toString());
-    query.set("pageSize", pageSize.toString());
-
-    navigate({
-      pathname: location.pathname,
-      search: query.toString(),
-    });
+    paramsState.setPage(page.toString());
+    paramsState.setPageSize(pageSize.toString());
   };
 
   return (
