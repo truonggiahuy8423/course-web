@@ -19,8 +19,8 @@ type Props = {
   className?: string;
   style?: React.CSSProperties;
   loading?: boolean;
+  maxWidth?: string;
 };
-
 export const Button = forwardRef<HTMLButtonElement, Props>((props, ref) => {
   const {
     children,
@@ -35,7 +35,10 @@ export const Button = forwardRef<HTMLButtonElement, Props>((props, ref) => {
     className,
     style,
     loading,
+    maxWidth
   } = props;
+
+  const customStyle = maxWidth ? { ...style, maxWidth } : style;
 
   return (
     <button
@@ -48,12 +51,11 @@ export const Button = forwardRef<HTMLButtonElement, Props>((props, ref) => {
         [styles.rounded]: rounded,
         [styles.loading]: loading,
       })}
-      style={style}
+      style={customStyle}
       disabled={disabled}
-      ref={ref} // Thêm ref vào nút
-
+      ref={ref}
     >
-      {loading && <div className={styles.spinner}></div>} {/* Icon loading */}
+      {loading && <div className={styles.spinner}></div>}
       {children}
     </button>
   );
