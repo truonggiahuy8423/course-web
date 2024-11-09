@@ -30,12 +30,48 @@ export type Course = {
 };
 
 export interface GetCoursesResponse {
-    total: number;
-    courses: Course[];
-  }
+  total: number;
+  courses: Course[];
+}
 
+export interface GetSubjectsResponse {
+  total: number;
+  subjects: Subject[];
+}
 
-  export interface GetSubjectsResponse {
-    total: number;
-    subjects: Subject[];
-  }
+export interface Student {
+  studentId: number;
+  userId: number;
+  username: string;
+  email: string;
+  dob: string;
+  lastAccess: string;
+  gender: boolean;
+  avatar: string;
+}
+
+export interface GetStudentsResponse {
+  total: number;
+  students: Student[];
+}
+
+export interface Schedule {
+  scheduleId: number;
+  courseId: number;
+  room: Room;
+  status: string;
+  startTime: string;
+  endTime: string;
+}
+
+export interface GetRoomsResponse {
+  total: number;
+  rooms: Room[];
+}
+
+export interface Room {
+  roomId: number;
+  roomName: string;
+  createdDate: string;
+  updatedDate: string;
+}

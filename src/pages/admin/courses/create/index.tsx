@@ -16,25 +16,46 @@ import moment from "moment";
 import { Dayjs } from "dayjs";
 import CustomDatePicker from "../../../../components/CustomDatePicker";
 import ChooseLecturerModal from "./components/ChooseLecturerModal";
-import { Lecturer, Subject } from "../../../../interfaces/Course";
+import {
+  Lecturer,
+  Schedule,
+  Student,
+  Subject,
+} from "../../../../interfaces/Course";
 import ChooseSubjectModal from "./components/ChooseSubjectModal";
+import ChooseStudentModal from "./components/ChooseStudentModal";
+import Label from "../../../../components/Label";
+import ScheduleList from "../../../../components/ScheduleList";
+import ScheduleSelectComponent from "./components/ScheduleSelectComponent";
+import { createCourse } from "../../../../services/CourseService";
+import { toast } from "react-toastify";
 // import exp from "constants";
 
-export type Schedule = {
-  date: string;
-  startTime: string;
-  endTime: string;
-};
+// export type Schedule = {
+//   date: string;
+//   startTime: string;
+//   endTime: string;
+// };
 
 export type CourseCreateFormData = {
   startDate: string;
   endDate: string;
-  // subjectId: number;
-  // lecturerIds: number[];
   lecturers: Lecturer[];
+  students: Student[];
   subject: Subject;
+  schedules: Schedule[];
+};
+
+export type CourseCreateDTO = {
+  startDate: string;
+  endDate: string;
+  subjectId: number;
+  lecturerIds: number[];
+  // lecturers: Lecturer[];
+  // students: Student[];
+  // subject: Subject;
   studentIds: number[];
-  schedule: Schedule[];
+  schedules: Schedule[];
 };
 
 const AdminCoursesCreate = () => {
@@ -48,7 +69,8 @@ const AdminCoursesCreate = () => {
     defaultValues: {
       startDate: dayjs().format("DD-MM-YYYY"), // Giá trị mặc định là ngày hiện tại
       lecturers: [],
-      // lecturers: Lecturer[],
+      students: [],
+      schedules: [],
     },
   });
   console.log("Default Values:", control._defaultValues);
@@ -63,6 +85,30 @@ const AdminCoursesCreate = () => {
   const onSubmit = async (data: CourseCreateFormData) => {
     setIsLoading(true);
     console.log(data);
+    const courseCreateDTO: CourseCreateDTO = {
+      startDate: data.startDate,
+      endDate: data.endDate,
+      subjectId: data.subject.subjectId,
+      lecturerIds: data.lecturers.map((lecturer) => lecturer.lecturerId),
+      studentIds: data.students.map((student) => student.studentId),
+      schedules: data.schedules,
+    };
+
+    setIsLoading(true);
+    createCourse(courseCreateDTO)
+    .then((res) => {
+      console.log(res);
+      toast.success("Create course successfully");
+      setIsLoading(false);
+    })
+    .catch((e) => {
+      console.log(e);
+      toast.error("Create course failed");
+      setIsLoading(false);
+    });
+
+    console.log(courseCreateDTO);
+
     // setError("");
 
     // loginByEmail(data)
@@ -101,98 +147,51 @@ const AdminCoursesCreate = () => {
   return (
     <div>
       <ComponentContainer justifyContent="center" padding={{ bottom: "20px" }}>
-        <h3>New course</h3>
+        <Label text="New course" fontSize="large" bold />
       </ComponentContainer>
       <MaxWidthContainer align="start" maxWidth="100%">
-        <Form onSubmit={handleSubmit(onSubmit)} gap="medium">
+        <Form onSubmit={handleSubmit(onSubmit)} gap="large">
           <FormItem>
-            Start Date:
-            <CustomDatePicker 
-              name="startDate" 
+            <ChooseSubjectModal name="subject" control={control} />
+          </FormItem>
+
+          <FormItem>
+            <ScheduleSelectComponent name="schedules" control={control} />
+          </FormItem>
+
+          <FormItem>
+            <ChooseLecturerModal name="lecturers" control={control} />
+          </FormItem>
+
+          <FormItem>
+            <ChooseStudentModal name="students" control={control} />
+          </FormItem>
+
+          <FormItem>
+            <Label text="Start Date" fontSize="medium" />
+            <CustomDatePicker
+              name="startDate"
               placeholder="Select Start Date"
               control={control}
-              />
+            />
           </FormItem>
 
           <FormItem>
-            End Date:
-            <CustomDatePicker 
-              name="endDate" 
+            <Label text="End Date" fontSize="medium" />
+            <CustomDatePicker
+              name="endDate"
               placeholder="Select End Date"
               control={control}
-              />
-          </FormItem>
-          <FormItem>
-            Lecturers:
-            <ChooseLecturerModal 
-            name="lecturers" 
-            control={control}
-            />
-          </FormItem>
-          <FormItem>
-            Subject:
-            <ChooseSubjectModal 
-            name="subject" 
-            control={control}
-            />
-          </FormItem>
-          {/* <FormItem>
-            Start Date:
-            <Input
-              id="email"
-              type="text"
-              placeholder="Username(email)"
-              autoComplete="true"
-              // disabled={isLoading}
-              // Sử dụng nhiều quy tắc với trường rules
-              register={register("", {
-                required: "Email is required", // Quy tắc bắt buộc
-                pattern: {
-                  value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, // Regular expression for email
-                  message: "Invalid email address", // Thông báo khi vi phạm pattern
-                },
-              })}
-              // errorMessage={errors.email?.message}
             />
           </FormItem>
 
-          <FormItem>
-            <Input
-              id="password"
-              type="password"
-              placeholder="Password"
-              autoComplete="true"
-              // disabled={isLoading}
-              // Sử dụng nhiều quy tắc với trường rules
-              register={register("endDate", {
-                required: "Password is required", // Quy tắc bắt buộc
-                minLength: {
-                  value: 6, // Độ dài tối thiểu
-                  message: "Password must be at least 6 characters", // Thông báo lỗi
-                },
-                maxLength: {
-                  value: 12, // Độ dài tối đa
-                  message: "Password must not exceed 12 characters",
-                },
-              })}
-              // errorMessage={errors.password?.message}
-              // errorMessage={JSON.stringify(errors)}
-            />
-          </FormItem> */}
-          <FormItem>
-            {/* <button>Ok</button> */}
+          <FormItem style={{ alignItems: "center" }}>
             <Button
               type="submit"
               onClick={() => console.log(errors)}
-              // ref={submitButtonRef}
-              // className={styles.button}
               color="secondary"
-              maxWidth="fit-content"
+              maxWidth="300px"
               style={{ marginTop: "12px" }}
-              // disabled={
-              //   Object.keys(errors).length !== 0 || isLoading ? true : false
-              // }
-              // loading={isLoading}
             >
               Submit
             </Button>

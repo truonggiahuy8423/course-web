@@ -25,41 +25,22 @@ export type ColumnsType<T> = {
   width?: string | number;
 };
 
-export type paramsState = {
-  setPage: React.Dispatch<React.SetStateAction<string>>;
-  setPageSize: React.Dispatch<React.SetStateAction<string>>;
-  setSort: React.Dispatch<React.SetStateAction<string>>;
-  setSortDir: React.Dispatch<React.SetStateAction<string>>;
-  setSearch: React.Dispatch<React.SetStateAction<string>>;
-};
-
 type Props<T> = {
   columns: ColumnsType<T>[];
   dataSource: T[];
   total?: number;
   onClickRow?: (id: number) => void;
   rowKey?: string;
-  paramsState: paramsState;
-  page: string;
-  pageSize: string;
-  height?: string; // Add optional height prop
 };
 
 const Table = <T, >(props: Props<T>) => {
-  const {
-    columns,
-    dataSource,
-    total,
-    onClickRow,
-    rowKey,
-    paramsState,
-    page,
-    pageSize,
-    height, // Destructure height prop
-  } = props;
+  const { columns, dataSource, total, onClickRow, rowKey } = props;
 
   const location = useLocation();
   const navigate = useNavigate();
+  const query = new URLSearchParams(location.search);
+  const page = query.get("page") || "1";
+  const pageSize = query.get("pageSize") || "10";
 
   const handleTableChange = (
     _pagination: TablePaginationConfig,
@@ -68,20 +49,32 @@ const Table = <T, >(props: Props<T>) => {
     _extra: any
   ) => {
     const sorting = Array.isArray(sorter) ? sorter[0] : sorter;
+
+    // Lấy `sorterField` từ column nếu nó tồn tại
     const sorterField = sorting?.column
       ? (sorting.column as ColumnsType<T>).sorterField
-      : "1";
+      : '1';
 
-    paramsState.setSort(sorterField || "1");
+    query.set("sort", sorterField || '1'); // Sử dụng `sorterField` hoặc 'id' nếu không có
     const sorterOrder = (sorting?.order?.toString() || "ascend") as
       | "ascend"
       | "descend";
-    paramsState.setSortDir(sorterKey[sorterOrder]);
+    query.set("sortDir", sorterKey[sorterOrder] || "desc");
+
+    navigate({
+      pathname: location.pathname,
+      search: query.toString(),
+    });
   };
 
   const onChangePagination = (page: number, pageSize: number) => {
-    paramsState.setPage(page.toString());
-    paramsState.setPageSize(pageSize.toString());
+    query.set("page", page.toString());
+    query.set("pageSize", pageSize.toString());
+
+    navigate({
+      pathname: location.pathname,
+      search: query.toString(),
+    });
   };
 
   return (
@@ -99,13 +92,8 @@ const Table = <T, >(props: Props<T>) => {
             if (onClickRow) onClickRow(record.id);
           },
         })}
-        // Apply conditional styling based on height
-        style={{
-          height: height, // Set max height if provided
-          overflowY: height ? "auto" : undefined, // Enable overflow if height is set
-        }}
       />
-      <ComponentContainer justifyContent="right" padding={{ top: "14px", right: "40px" }}>
+      <ComponentContainer justifyContent="right" padding={{top: '14px', right: '40px'}}>
         <Pagination
           defaultCurrent={1}
           total={total}

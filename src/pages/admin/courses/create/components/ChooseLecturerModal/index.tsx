@@ -8,9 +8,12 @@ import DataTable, {
 import { Lecturer } from "../../../../../../interfaces/Course";
 import ListLecturer from "../../../../../../components/ListLecturer";
 import { useSetRecoilState } from "recoil";
+import { EditOutlined } from "@ant-design/icons";
 import { loadingState } from "../../../../../../states/loading";
 import { getLecturerList } from "../../../../../../services/CourseService";
 import { toast } from "react-toastify";
+import ComponentContainer from "../../../../../../components/ComponentContainer";
+import Label from "../../../../../../components/Label";
 
 type Props = {
   name: string;
@@ -138,16 +141,29 @@ export const ChooseLecturerModal = (prop: Props) => {
 
           return (
             <div style={{ width: "100%" }}>
+              <ComponentContainer justifyContent="left" padding={{bottom: '10px'}}>
+              <Label text="Lecturers" fontSize="medium" />
+                <Button
+                  type="button"
+                  style={
+                    {
+                      width: "40px",
+                      height: "40px",
+                      marginLeft: "14px",
+                      padding: "0px",
+                    }
+                  }
+                  onClick={() => {
+                    showModal();
+                    console.log(field.value);
+                  }}
+                >
+                  <EditOutlined />
+                </Button>
+              </ComponentContainer>
               <ListLecturer lecturers={field.value} />
-              <Button
-                type="button"
-                onClick={() => {
-                  showModal();
-                  console.log(field.value);
-                }}
-              >
-                Select
-              </Button>
+
+              
               <Modal
                 title=""
                 visible={isModalVisible}

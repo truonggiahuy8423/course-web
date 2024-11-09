@@ -1,29 +1,36 @@
 import React from 'react';
 import { Controller } from 'react-hook-form';
-import { DatePicker } from "antd";
+import { DatePicker } from 'antd';
 import dayjs from 'dayjs';
 
-type DatePickerProps = {
+type CustomDatePickerProps = {
     name: string;
     placeholder: string;
     control: any;
-}
+    mode?: 'date' | 'datetime'; // Chọn chế độ "date" hoặc "datetime"
+};
 
-export const CustomDatePicker: React.FC<DatePickerProps> = (props: DatePickerProps) => {
-    const { name, placeholder, control } = props;
+export const CustomDatePicker: React.FC<CustomDatePickerProps> = ({
+    name,
+    placeholder,
+    control,
+    mode = 'date' // Mặc định là chọn ngày
+}) => {
     return (
         <Controller
             name={name}
             control={control}
             render={({ field }) => (
+                console.log("field", field.value),
                 <DatePicker
-                format="DD-MM-YYYY" // Date format
-                  value={field.value ? dayjs(field.value, "DD-MM-YYYY") : null} // Convert string to Dayjs object for DatePicker
-                  onChange={(date, dateString) => {
-                    field.onChange(dateString); // Set field value as string
-                  }}
-                  placeholder={placeholder}
-                  style={{ width: "100%", height: '50px', fontSize: '16px', maxWidth: '320px' }}
+                    showTime={mode === 'datetime'} // Bật chọn giờ khi mode là "datetime"
+                    format={mode === 'datetime' ? "DD-MM-YYYY HH:mm" : "DD-MM-YYYY"} // Định dạng khác nhau theo mode
+                    value={field.value ? dayjs(field.value, mode === 'datetime' ? "DD-MM-YYYY HH:mm" : "DD-MM-YYYY") : null} // Chuyển đổi value theo định dạng
+                    onChange={(date, dateString) => {
+                        field.onChange(dateString); // Cập nhật giá trị theo dạng chuỗi
+                    }}
+                    placeholder={placeholder}
+                    style={{ width: "100%", height: '50px', fontSize: '16px', maxWidth: '320px' }}
                 />
             )}
         />

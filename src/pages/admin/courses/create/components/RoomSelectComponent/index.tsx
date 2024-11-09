@@ -6,12 +6,13 @@ import DataTable, {
   ColumnsType,
 } from "../../../../../../components/DataTable2";
 import { EditOutlined } from "@ant-design/icons";
-import { Lecturer, Subject } from "../../../../../../interfaces/Course";
+import { Lecturer, Room, Subject } from "../../../../../../interfaces/Course";
 import ListLecturer from "../../../../../../components/ListLecturer";
 import { useSetRecoilState } from "recoil";
 import { loadingState } from "../../../../../../states/loading";
 import {
   getLecturerList,
+  getRoomList,
   getSubjectList,
 } from "../../../../../../services/CourseService";
 import { toast } from "react-toastify";
@@ -24,18 +25,10 @@ type Props = {
   control: any;
 };
 
-export const ChooseSubjectModal = (prop: Props) => {
+export const RoomSelectComponent = (prop: Props) => {
   const { name, control } = prop;
   const [isModalVisible, setIsModalVisible] = useState(false);
   const setIsLoading = useSetRecoilState(loadingState);
-
-  const showModal = () => {
-    setIsModalVisible(true);
-  };
-
-  const handleCancel = () => {
-    setIsModalVisible(false);
-  };
 
   return (
     <div>
@@ -43,16 +36,16 @@ export const ChooseSubjectModal = (prop: Props) => {
         name={name}
         control={control}
         render={({ field }) => {
-          const [tempSubject, setTempSubject] = useState<Subject>();
-          const [subjects, setSubjects] = useState<Subject[]>([]);
+          //   const [tempSubject, setTempSubject] = useState<Room>();
+          const [rooms, setRooms] = useState<Room[]>([]);
           const [total, setTotal] = useState(0);
           const [page, setPage] = useState("1");
-          const [pageSize, setPageSize] = useState("6");
+          const [pageSize, setPageSize] = useState("5");
           const [sort, setSort] = useState("");
           const [sortDir, setSortDir] = useState("asc");
           const [search, setSearch] = useState("");
 
-          const getSubjects = async () => {
+          const getRooms = async () => {
             setIsLoading(true);
 
             // const queryParams = new URLSearchParams(location.search);
@@ -65,9 +58,9 @@ export const ChooseSubjectModal = (prop: Props) => {
               search,
             };
 
-            getSubjectList(params)
+            getRoomList(params)
               .then(async (res) => {
-                setSubjects(res.data.subjects);
+                setRooms(res.data.rooms);
                 setTotal(res.data.total);
                 setIsLoading(false);
               })
@@ -79,46 +72,51 @@ export const ChooseSubjectModal = (prop: Props) => {
 
           useEffect(() => {
             if (isModalVisible) {
-              setTempSubject(field.value);
+              //   set(field.value);
               setPage("1");
-              setPageSize("6");
+              setPageSize("5");
               setSort("");
               setSortDir("asc");
               setSearch("");
             }
           }, [isModalVisible]);
           useEffect(() => {
-            getSubjects();
+            getRooms();
           }, [page, pageSize, sort, sortDir, search]);
-          const columns: ColumnsType<Subject>[] = [
+          const columns: ColumnsType<Room>[] = [
             {
               title: "ID",
-              dataIndex: "subjectId",
+              dataIndex: "roomId",
               width: "20%",
             },
             {
               title: "Name",
-              dataIndex: "subjectName",
-              width: "50%",
+              dataIndex: "roomName",
+              width: "30%",
             },
             {
-              title: "Description",
-              dataIndex: "description",
-              width: "",
+              title: "Created At",
+              dataIndex: "createdDate",
+              width: "20%",
+            },
+            {
+              title: "Updated At",
+              dataIndex: "updatedDate",
+              width: "20%",
             },
             {
               title: "",
               render: (_, record) => {
-                const isSelected = tempSubject?.subjectId === record.subjectId;
+                const isSelected = (field.value) ? field.value.roomId === record.roomId : false;
 
                 return (
                   <input
                     type="radio"
-                    name="subject"
+                    name="room"
                     checked={isSelected}
                     onChange={(e) => {
                       if (e.target.checked) {
-                        setTempSubject(record);
+                        field.onChange(record);
                       }
                     }}
                   />
@@ -130,43 +128,16 @@ export const ChooseSubjectModal = (prop: Props) => {
 
           return (
             <div style={{ width: "100%" }}>
-              <ComponentContainer justifyContent="left" padding={{bottom: '10px'}}>
-                <Label text="Subject" fontSize="medium" />
-                <Button
-                  type="button"
-                  style={
-                    {
-                      width: "40px",
-                      height: "40px",
-                      marginLeft: "14px",
-                      padding: "0px",
-                    }
-                  }
-                  onClick={() => {
-                    showModal();
-                    console.log(field.value);
-                  }}
-                >
-                  <EditOutlined />
-                </Button>
-              </ComponentContainer>
-              <SubjectDescription subject={field.value} />
-              <Modal
-                title=""
-                visible={isModalVisible}
-                onOk={() => {
-                  // Update the field's value with the selected lecturers
-                  field.onChange(tempSubject);
-                  setIsModalVisible(false);
-                }}
-                onCancel={handleCancel}
-                width={1000}
-              >
-                Picked subject:
-                <SubjectDescription subject={tempSubject} />
-                List of subjects:
-                <DataTable<Subject>
-                  dataSource={subjects}
+              {/* <ComponentContainer
+                justifyContent="left"
+                padding={{ bottom: "10px" }}
+              > */}
+                {field.value ? `ID: ${field.value.roomId}-Name: ${field.value.roomName}` : <p style={{color: '#c2c2c2', fontSize: '13px'}}>No room selected</p>}
+                {/* <SubjectDescription subject={field.value} /> */}
+                <br/>
+                <DataTable<Room>
+                    // height="400px"
+                  dataSource={rooms}
                   paramsState={{
                     setPage,
                     setPageSize,
@@ -179,7 +150,7 @@ export const ChooseSubjectModal = (prop: Props) => {
                   total={total}
                   columns={columns}
                 />
-              </Modal>
+              {/* </ComponentContainer> */}
             </div>
           );
         }}
@@ -188,4 +159,4 @@ export const ChooseSubjectModal = (prop: Props) => {
   );
 };
 
-export default ChooseSubjectModal;
+export default RoomSelectComponent;

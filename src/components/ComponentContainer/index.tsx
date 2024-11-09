@@ -16,6 +16,7 @@ const ComponentContainer: React.FC<ComponentContainerProps> = ({ padding, justif
 
     const containerStyle: React.CSSProperties = {
         display: 'flex',
+        flexDirection: 'row',
         justifyContent: justifyContentValue,
         paddingTop: padding?.top || '0',
         paddingRight: padding?.right || '0',
