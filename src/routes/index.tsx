@@ -36,7 +36,6 @@ import AdminCoursesCreate from "../pages/admin/courses/create";
 import AdminSubject from "../pages/admin/subject";
 import AdminSubjects from "../pages/admin/subjects";
 import AdminSubjectsCreate from "../pages/admin/subjects/create";
-import AdminAdministratorsEdit from "../pages/admin/administrators/edit";
 
 // import About from '../components/About';
 // import Contact from '../components/Contact';
@@ -179,14 +178,6 @@ const AppRoutes = () => {
                     <AdminAdministrator />
                   </Authentication>
                 </AccessControl>
-              }
-            />
-            <Route
-              path="/admin/administrator/:id/edit"
-              element={
-                <Authentication>
-                  <AdminAdministratorsEdit />
-                </Authentication>
               }
             />
             <Route
