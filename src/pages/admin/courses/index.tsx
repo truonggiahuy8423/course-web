@@ -159,6 +159,8 @@ const AdminCourses = () => {
       sortDir,
     };
 
+    console.log(params);
+
     getCourses(params)
       .then(async (res) => {
         setCourses(res.data.courses);
