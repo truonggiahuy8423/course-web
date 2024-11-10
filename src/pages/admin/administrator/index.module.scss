@@ -1,0 +1,26 @@
+/* UserView.css */
+.view-container {
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+
+.view-field {
+    margin-bottom: 15px;
+}
+
+.view-field label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.view-field span {
+    display: block;
+    padding: 8px;
+    background-color: #e0e0e0;
+    border-radius: 4px;
+}
