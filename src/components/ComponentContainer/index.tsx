@@ -1,5 +1,4 @@
 import React, {ReactNode} from 'react';
-
 interface ComponentContainerProps {
     children: ReactNode;
     padding?: {
@@ -10,7 +9,6 @@ interface ComponentContainerProps {
     };
     justifyContent?: 'right' | 'left' | 'center';
 }
-
 const ComponentContainer: React.FC<ComponentContainerProps> = ({ padding, justifyContent, children }) => {
     const justifyContentValue = justifyContent === 'right' ? 'flex-end' : (justifyContent === 'left' ? 'flex-start' : 'center');
 
@@ -23,8 +21,6 @@ const ComponentContainer: React.FC<ComponentContainerProps> = ({ padding, justif
         paddingBottom: padding?.bottom || '0',
         paddingLeft: padding?.left || '0',
     };
-
     return <div style={containerStyle}>{children}</div>;
 };
-
 export default ComponentContainer;
