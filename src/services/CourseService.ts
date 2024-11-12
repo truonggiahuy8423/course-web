@@ -1,5 +1,5 @@
 import { ApiResponse } from "../interfaces/ApiResponse";
-import { GetCoursesResponse, GetRoomsResponse, GetStudentsResponse, GetSubjectsResponse } from "../interfaces/Course";
+import { Course, GetCoursesResponse, GetRoomsResponse, GetStudentsResponse, GetSubjectsResponse } from "../interfaces/Course";
 import { GetLecturersResponse } from "../interfaces/Lecturer";
 import { CourseCreateDTO } from "../pages/admin/courses/create";
 // import { Course } from "../pages/admin/courses";
@@ -127,4 +127,21 @@ export const createCourse = (
       e?.message || "Login failed/Network problem"
     );
   });;
+};
+
+export const getCourseById = async (params: any): Promise<ApiResponse<Course>> => {
+  const token = localStorage.getItem("token");
+
+  return getRequest<ApiResponse<Course>>({
+    url: `${apiUrl}/get-course-by-id`,
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: (token ? `Bearer ${token}` : ""),
+    },
+    params: params,
+  }).catch((e) => {
+    throw new Error(
+      e?.message || "Access failed/Network problem"
+    );
+  });
 };
