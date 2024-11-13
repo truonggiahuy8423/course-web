@@ -3,6 +3,7 @@ import { useRecoilValue } from "recoil";
 import { loadingState } from "../../states/loading";
 import { set } from "react-hook-form";
 
+
 const LoadingBar = () => {
   const isLoading = useRecoilValue(loadingState);
   const [width, setWidth] = useState(0);

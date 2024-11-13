@@ -1,0 +1,72 @@
+$orange-color: #ff6700;
+$hover-color: #e65a00;
+
+.sidebar {
+    width: 100vw;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #d8e8e8;
+  }
+
+.title {
+  color: $orange-color;
+  font-size: 18px;
+  margin-bottom: 20px;
+}
+
+.searchInput {
+    width: 400px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 80px;
+    background-color: white;
+    color: black;
+    margin: 0 auto; /* Căn giữa trong không gian */
+  }
+  
+
+.btnContainer {
+    display: flex;
+    gap: 10px; /* Đảm bảo khoảng cách giữa hai nút là 10px */
+    margin-left: auto; /* Đẩy nhóm nút về bên phải */
+  }
+  
+
+.btn {
+padding: 10px 20px; /* Khoảng cách giữa nội dung và viền của nút */
+border-radius: 40px; /* Bo tròn các góc */
+font-size: 12px; /* Kích thước chữ */
+cursor: pointer;
+width: 100px; /* Chiều rộng cố định của nút */
+height: 45px; /* Chiều cao cố định của nút */
+border: 1px solid $orange-color; /* Viền với màu cam */
+transition: background-color 0.3s ease, color 0.3s ease; /* Hiệu ứng chuyển màu mượt mà */
+display: flex; 
+justify-content: center;
+align-items: center; 
+box-sizing: border-box; 
+
+&.signup {
+    background-color: white;
+    color: $orange-color;
+
+    &:hover {
+    background-color: $orange-color;
+    color: white;
+    }
+}
+
+&.loginBtn {
+    background-color: $orange-color;
+    color: white;
+
+    &:hover {
+    background-color: #fefefe;
+    color: $orange-color;
+    }
+}
+}
+  
+  

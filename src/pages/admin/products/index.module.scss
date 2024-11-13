@@ -1,0 +1,73 @@
+.productsPage {
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar {
+  width: 100vw;
+  background-color: #f8f8f8;
+  padding: 10px 0;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.contentArea {
+  padding: 20px;
+  position: relative;
+}
+
+.courseList {
+  display: flex;
+  gap: 20px;
+  overflow-x: auto;
+  padding: 10px 0;
+  scroll-behavior: smooth;
+
+  &.expanded {
+    flex-wrap: wrap;
+    overflow-x: visible;
+  }
+}
+
+.courseCardWrapper {
+  flex: 1 1 22%; // 4 items per row in expanded mode
+}
+.courseList::-webkit-scrollbar {
+  display: none; // Ẩn scrollbar
+}
+
+
+
+
+.arrowButton {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: #333;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+}
+
+.arrowButton.left {
+  left: -20px;
+}
+
+.arrowButton.right {
+  right: -20px;
+}
+
+.expanderButton {
+  display: block;
+  text-align: center;
+  margin-top: 20px;
+  cursor: pointer;
+  color: #007bff;
+  font-weight: bold;
+}

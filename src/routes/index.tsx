@@ -36,6 +36,7 @@ import AdminCoursesCreate from "../pages/admin/courses/create";
 import AdminSubject from "../pages/admin/subject";
 import AdminSubjects from "../pages/admin/subjects";
 import AdminSubjectsCreate from "../pages/admin/subjects/create";
+import ProductsPage from "../pages/admin/products"
 
 // import About from '../components/About';
 // import Contact from '../components/Contact';
@@ -45,7 +46,7 @@ const AppRoutes = () => {
     <Router>
       <Routes>
         <Route path="/login" element={<LoginPage />} />
-
+        <Route path="/products" element={<ProductsPage />} />
         <Route element={<AppLayout />}>
           <Route element={<AdminLayout />}>
             <Route

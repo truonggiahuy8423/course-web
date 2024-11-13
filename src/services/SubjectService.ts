@@ -19,3 +19,25 @@ export const GetAllSubjects = (
       );
     });;
   };
+
+
+export const AddSubject = (
+  request: { subjectName: string; description: string; categoryId: number }
+): Promise<ApiResponse<any>> => { // Chỉ truyền một kiểu vào ApiResponse
+  return postRequest<ApiResponse<any>, any>({ // Chỉ truyền một kiểu vào ApiResponse
+    url: `${apiUrl}/api/subjects`,
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: token ? `Bearer ${token}` : "", // Chèn token nếu có
+    },
+    body: {
+      subjectName: request.subjectName,
+      description: request.description,
+      categoryId: request.categoryId,
+    },
+  }).catch((e) => {
+    throw new Error(
+      e?.message || "Failed to add subject / Network problem"
+    );     
+  });
+};

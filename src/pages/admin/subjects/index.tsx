@@ -1,68 +1,98 @@
 import React, { useEffect, useState } from "react";
 import { adminNavigation } from "../../../states/adminNavigation";
 import { useRecoilState } from "recoil";
-import { GetAllSubjects } from "../../../services/SubjectService";
-import { Divider, Table } from "antd";
-import DataTable from "../courses/components/DataTable";
+import { GetAllSubjects, AddSubject } from "../../../services/SubjectService";
+import { Divider, Table, Button, Modal, Form, Input, message } from "antd";
 
-
-const queryParams = new URLSearchParams(location.search);
-const page = queryParams.get("page") || "1";
-const pageSize = queryParams.get("pageSize") || "10";
-const sort = queryParams.get("sort") || "subjectId";
-const sortDir = queryParams.get("sortDir") || "asc";
-const params = {
-  page: Number(page),
-  pageSize: Number(pageSize),
-  sort,
-  sortDir,
+type SubjectTable = {
+  subjectId: number;
+  subjectName: string;
+  description: string;
 };
-type SubjectTalbe = {
-  subjectId: number,
-  subjectName: string,
-  desctription: string
-}
 
-const AdminSubjects = () => {
-  // useState
-  const [listSubject, setListSubject] = useState<any>()
+const AdminSubjects: React.FC = () => {
+  const [listSubject, setListSubject] = useState<SubjectTable[]>([]);
   const [itemId, setAdminNavigation] = useRecoilState(adminNavigation);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [subjectName, setSubjectName] = useState("");
+  const [description, setDescription] = useState("");
+  const [categoryId, setCategoryId] = useState("");
 
   useEffect(() => {
     setAdminNavigation(2);
   }, []);
 
-  useEffect(() => {
+  const fetchSubjects = () => {
     GetAllSubjects()
-    .then((res) => {
-      setListSubject(res.data)
-    }).catch((e) => {
-    })
+      .then((res) => {
+        setListSubject(res.data);
+      })
+      .catch((e) => {
+        console.error(e);
+      });
+  };
+
+  useEffect(() => {
+    fetchSubjects();
   }, []);
 
+  const handleAddSubject = () => {
+    setIsModalVisible(true);
+  };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
+    resetForm();
+  };
+
+  const handleSaveSubject = () => {
+    const newSubject = {
+      subjectName,
+      description,
+      categoryId: Number(categoryId),
+    };
+
+    AddSubject(newSubject)
+      .then(() => {
+        message.success("Subject added successfully!");
+        setIsModalVisible(false); // Đóng modal sau khi thêm thành công
+        fetchSubjects(); // Gọi lại API để lấy danh sách subjects mới nhất
+        resetForm();
+      })
+      .catch((error) => {
+        message.error("Failed to add subject!");
+        console.error(error);
+      });
+  };
+
+  const resetForm = () => {
+    setSubjectName("");
+    setDescription("");
+    setCategoryId("");
+  };
 
   const columns = [
     {
-      title: 'ID ',
-      dataIndex: 'subjectId',
-      key: 'subjectId',
+      title: "ID",
+      dataIndex: "subjectId",
+      key: "subjectId",
       sorter: true,
-      render:( text:any) => <a>{text}</a>
+      render: (text: any) => <a>{text}</a>,
     },
     {
-      title: 'Name',
-      dataIndex: 'subjectName',
-      key: 'subjectName'
+      title: "Name",
+      dataIndex: "subjectName",
+      key: "subjectName",
     },
     {
-      title: 'Desctription',
-      dataIndex: 'desctription',
-      key: 'desctription'
-    },  
+      title: "Description",
+      dataIndex: "description",
+      key: "description",
+    },
     {
-      title: 'Action',
-      key: 'action',
-      render: (text, record) => (
+      title: "Action",
+      key: "action",
+      render: (text: any, record: any) => (
         <span>
           <a>Edit</a>
           <Divider type="vertical" />
@@ -72,22 +102,59 @@ const AdminSubjects = () => {
     },
   ];
 
-
-const data = (listSubject != null && listSubject.map((item:any) => {
-  return {
-    key:item.subjectId,
+  const data = listSubject.map((item) => ({
+    key: item.subjectId,
     subjectId: item.subjectId,
     subjectName: item.subjectName,
-    desctription: item.description
-  }
-})) 
-console.log(data)
+    description: item.description,
+  }));
 
   return (
     <div>
       <h1>Subject</h1>
-      <Table columns={columns} dataSource={data} />
+      {/* Nút Add Subject */}
+      <Button type="primary" onClick={handleAddSubject}>
+        Add Subject
+      </Button>
+
+      {/* Bảng dữ liệu */}
+      <Table columns={columns} dataSource={data} style={{ marginTop: 20 }} />
+
+      {/* Modal để nhập thông tin subject mới */}
+      <Modal
+        title="Add New Subject"
+        visible={isModalVisible}
+        onCancel={handleCancel}
+        onOk={handleSaveSubject}
+        okText="Save"
+        cancelText="Cancel"
+      >
+        <Form layout="vertical">
+          <Form.Item label="Subject Name" required>
+            <Input
+              placeholder="Enter subject name"
+              value={subjectName}
+              onChange={(e) => setSubjectName(e.target.value)}
+            />
+          </Form.Item>
+          <Form.Item label="Description" required>
+            <Input
+              placeholder="Enter description"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+            />
+          </Form.Item>
+          <Form.Item label="Category ID">
+            <Input
+              placeholder="Enter category ID"
+              value={categoryId}
+              onChange={(e) => setCategoryId(e.target.value)}
+            />
+          </Form.Item>
+        </Form>
+      </Modal>
     </div>
   );
-}
+};
+
 export default AdminSubjects;
