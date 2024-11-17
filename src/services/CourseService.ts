@@ -3,7 +3,7 @@ import { GetCoursesResponse } from "../interfaces/Course";
 import { Course } from "../pages/admin/courses";
 import { getRequest } from "../routes/middleware/fetch";
 
-const apiUrl = import.meta.env.VITE_API_URL;
+const apiUrl = "http://localhost:8080";
 
 export const getCourses = async (params: any): Promise<ApiResponse<GetCoursesResponse>> => {
   const token = localStorage.getItem("token");
