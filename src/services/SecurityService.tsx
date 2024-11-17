@@ -38,7 +38,7 @@ export const loginByEmail = (
     headers: {
       "Content-Type": "application/json",
     },
-    body: request,
+    body: JSON.parse(JSON.stringify(request)),
   }).catch((e) => {
     throw new Error(
       e?.message || "Login failed/Network problem"
