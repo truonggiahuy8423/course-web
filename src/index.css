@@ -24,7 +24,7 @@
 body,
 html {
   height: 100%;
-  font-family: sans-serif;
+  font-family: sans-serif!important;
 }
 
 /* ------------------------------------ */
@@ -96,7 +96,11 @@ iframe {
   border: none !important;
 }
 
-td {
-  color: #2c2c2c;
-  font-family: inherit;
+/* table {
+  font-family: sans-serif;
 }
+
+td {
+  /* /* color: #2c2c2c; */
+  /* font-family: sans-serif;
+}  */

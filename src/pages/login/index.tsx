@@ -55,7 +55,8 @@ const LoginPage = () => {
           dob: res.data.dob,
           countryCode: res.data.countryCode,
           token: res.data.token,
-          avatar: "user_avatar"
+          avatar: "user_avatar",
+          role: res.data.role,
         };
         setUserState(userData);
         localStorage.setItem(userData.avatar, res.data.avatar);

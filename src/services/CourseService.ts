@@ -145,3 +145,37 @@ export const getCourseById = async (params: any): Promise<ApiResponse<Course>> =
     );
   });
 };
+
+export const getCourseDetailsById = async (params: any): Promise<ApiResponse<Course>> => {
+  const token = localStorage.getItem("token");
+
+  return getRequest<ApiResponse<Course>>({
+    url: `${apiUrl}/get-course-details-by-id`,
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: (token ? `Bearer ${token}` : ""),
+    },
+    params: params,
+  }).catch((e) => {
+    throw new Error(
+      e?.message || "Access failed/Network problem"
+    );
+  });
+};
+
+export const getStudentsByCourseId = async (params: any): Promise<ApiResponse<GetStudentsResponse>> => {
+  const token = localStorage.getItem("token");
+
+  return getRequest<ApiResponse<GetStudentsResponse>>({
+    url: `${apiUrl}/get-students-by-course-id`,
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: (token ? `Bearer ${token}` : ""),
+    },
+    params: params,
+  }).catch((e) => {
+    throw new Error(
+      e?.message || "Access failed/Network problem"
+    );
+  });
+};

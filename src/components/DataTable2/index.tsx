@@ -39,7 +39,7 @@ type Props<T> = {
   total?: number;
   onClickRow?: (id: number) => void;
   rowKey?: string;
-  paramsState: paramsState;
+  paramsState?: paramsState;
   page: string;
   pageSize: string;
   height?: string; // Add optional height prop
@@ -72,16 +72,16 @@ const Table = <T, >(props: Props<T>) => {
       ? (sorting.column as ColumnsType<T>).sorterField
       : "1";
 
-    paramsState.setSort(sorterField || "1");
+    paramsState?.setSort(sorterField || "1");
     const sorterOrder = (sorting?.order?.toString() || "ascend") as
       | "ascend"
       | "descend";
-    paramsState.setSortDir(sorterKey[sorterOrder]);
+    paramsState?.setSortDir(sorterKey[sorterOrder]);
   };
 
   const onChangePagination = (page: number, pageSize: number) => {
-    paramsState.setPage(page.toString());
-    paramsState.setPageSize(pageSize.toString());
+    paramsState?.setPage(page.toString());
+    paramsState?.setPageSize(pageSize.toString());
   };
 
   return (
@@ -105,7 +105,7 @@ const Table = <T, >(props: Props<T>) => {
           overflowY: height ? "auto" : undefined, // Enable overflow if height is set
         }}
       />
-      <ComponentContainer justifyContent="right" padding={{ top: "14px", right: "40px" }}>
+      {paramsState ? <ComponentContainer justifyContent="right" padding={{ top: "14px", right: "40px" }}>
         <Pagination
           defaultCurrent={1}
           total={total}
@@ -114,7 +114,7 @@ const Table = <T, >(props: Props<T>) => {
           current={Number(page)}
           pageSize={Number(pageSize)}
         />
-      </ComponentContainer>
+      </ComponentContainer> : null}
     </>
   );
 };

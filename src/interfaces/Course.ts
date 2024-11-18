@@ -25,6 +25,8 @@ export type Course = {
   startDate: string;
   endDate: string;
   lecturers: Lecturer[];
+  // students: Student[];
+  schedules: Schedule[];
   numberOfStudents: number;
   subject: Subject;
 };

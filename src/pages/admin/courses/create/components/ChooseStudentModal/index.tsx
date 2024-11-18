@@ -160,11 +160,15 @@ export const ChooseStudentModal = (prop: Props) => {
               title: "ID",
               dataIndex: "studentId",
               width: "20%",
+              sorterField: "1",
+              sorter: true,
             },
             {
               title: "Name",
               dataIndex: "username",
               width: "50%",
+              sorterField: "2",
+              sorter: true,
             },
             {
               title: "Email",

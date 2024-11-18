@@ -21,103 +21,24 @@ const AdminNavigation = (props: Props) => {
     <div className={styles.container}>
       <div className={styles.leftNav}>
           <img className={styles.logo} src="/img/logo_course.png" alt="" />
-        <Link className="item1" to="/admin/courses">
+        <a className="item1" href="/admin/courses">
           Danh sách lớp học
-        </Link>
-
-        <Link className="item2" to="/admin/lecturers">
+        </a>
+        <a className="item2" href="/admin/lecturers">
           Giảng viên
-        </Link>
+        </a>
 
-        <Link className="item3" to="/admin/students">
+        <a className="item3" href="/admin/students">
           Học viên
-        </Link>
+        </a>
 
-        <Link className="item4" to="/admin/users">
+        <a className="item4" href="/admin/users">
           User
-        </Link>
+        </a>
 
-        <Link className="item5" to="/admin/subjects">
+        <a className="item5" href="/admin/subjects">
           Môn học
-        </Link>
-        <Link className="item4" to="/admin/users">
-          User
-        </Link>
-
-        <Link className="item5" to="/admin/subjects">
-          Môn học
-        </Link>
-        <Link className="item4" to="/admin/users">
-          User
-        </Link>
-
-        <Link className="item5" to="/admin/subjects">
-          Môn học
-        </Link>
-        <Link className="item4" to="/admin/users">
-          User
-        </Link>
-
-        <Link className="item5" to="/admin/subjects">
-          Môn học
-        </Link>
-        <Link className="item4" to="/admin/users">
-          User
-        </Link>
-
-        <Link className="item5" to="/admin/subjects">
-          Môn học
-        </Link>
-        <Link className="item5" to="/admin/subjects">
-          Môn học
-        </Link>
-        <Link className="item4" to="/admin/users">
-          User
-        </Link>
-
-        <Link className="item5" to="/admin/subjects">
-          Môn học
-        </Link>
-        <Link className="item5" to="/admin/subjects">
-          Môn học
-        </Link>
-        <Link className="item4" to="/admin/users">
-          User
-        </Link>
-
-        <Link className="item5" to="/admin/subjects">
-          Môn học
-        </Link>
-        <Link className="item5" to="/admin/subjects">
-          Môn học
-        </Link>
-        <Link className="item4" to="/admin/users">
-          User
-        </Link>
-
-        <Link className="item5" to="/admin/subjects">
-          Môn học
-        </Link>
-        <Link className="item5" to="/admin/subjects">
-          Môn học
-        </Link>
-        <Link className="item4" to="/admin/users">
-          User
-        </Link>
-
-        <Link className="item5" to="/admin/subjects">
-          Môn học
-        </Link>
-        <Link className="item5" to="/admin/subjects">
-          Môn học
-        </Link>
-        <Link className="item4" to="/admin/users">
-          User
-        </Link>
-
-        <Link className="item5" to="/admin/subjects">
-          Môn học
-        </Link>
+        </a>
       </div>
       {children}
     </div>

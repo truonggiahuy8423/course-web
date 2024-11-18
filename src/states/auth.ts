@@ -13,6 +13,7 @@ export type User = {
   countryCode: string;
   token: string;
   avatar: string
+  role: string;
 };
 
 
@@ -29,6 +30,7 @@ export const userState = atom<User | null>({
     countryCode: "",
     token: "",
     avatar: "",
+    role: "",
   },
   effects_UNSTABLE: [persistAtom],
 });

@@ -206,6 +206,9 @@ const AdminCourses = () => {
               // width: "40px",
               padding: "6px 16px",
             }}
+            onClick={() => {
+              navigate("/admin/courses/create");
+            }}
           >
             <PlusOutlined />
             {/* New Course */}

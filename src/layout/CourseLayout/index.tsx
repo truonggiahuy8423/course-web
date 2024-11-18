@@ -2,7 +2,7 @@
 import React, { ReactNode, useEffect, useState } from "react";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { userState } from "../../states/auth";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import styles from "./index.module.scss";
 import { Link, Outlet } from "react-router-dom";
 import { adminNavigationItems } from "../../data/adminNavigation";
@@ -14,44 +14,15 @@ import { getCourseById } from "../../services/CourseService";
 import { toast } from "react-toastify";
 import { ArrowLeftOutlined } from "@ant-design/icons";
 
-type Props = {};
-
-export const courseNavigationItem: CourseNavigationItem[] = [
-  {
-    id: 1,
-    url: "/courses/infor",
-    label: "Danh sách lớp học",
-  },
-  {
-    id: 2,
-    url: "/admin/subjects",
-    label: "Môn học",
-  },
-  {
-    id: 3,
-    url: "/admin/lecturers",
-    label: "Giảng viên",
-  },
-  {
-    id: 4,
-    url: "/admin/students",
-    label: "Học viên",
-  },
-  {
-    id: 5,
-    url: "/admin/administrators",
-    label: "Quản trị viên",
-  },
-  {
-    id: 6,
-    url: "/admin/guests",
-    label: "Danh sách người dùng",
-  },
-];
+type Props = {
+  isAdmin: boolean;
+};
 
 const CourseLayout = (props: Props) => {
   // const [itemId, setAdminNavigation] = useRecoilState(adminNavigation);
+  const {isAdmin} = props;
   const [course, setCourse] = useState<Course>();
+  const navigate = useNavigate();
 
   const { id } = useParams<{ id: string }>();
   console.log("Course ID:", id);
@@ -87,6 +58,7 @@ const CourseLayout = (props: Props) => {
             <div style={{ display: "flex", justifyContent: "center" }}>
               <Button
                 type="button"
+                onClick={() => navigate("/courses")}
                 className={`${styles.classInforSectionBackBtn} ${styles.highlightButtonReverse}`}
               >
                 <ArrowLeftOutlined />
@@ -114,23 +86,23 @@ const CourseLayout = (props: Props) => {
           </div>
           <Link
             className={styles.item}
-            to={`/course/${course?.courseId}/infor`}
+            to={`${isAdmin ? 'admin' : ''}/course/${course?.courseId}/infor`}
           >
             Course Information
           </Link>
           <Link
             className={styles.item}
-            to={`/course/${course?.courseId}/attendance`}
+            to={`${isAdmin ? 'admin' : ''}/course/${course?.courseId}/attendance`}
           >
             Attendance
           </Link>
           <Link
             className={styles.item}
-            to={`/course/${course?.courseId}/resource`}
+            to={`${isAdmin ? 'admin' : ''}/course/${course?.courseId}/resource`}
           >
             Resource
           </Link>
-          <Link className={styles.item} to={`/course/${course?.courseId}/chat`}>
+          <Link className={styles.item} to={`${isAdmin ? 'admin' : ''}/course/${course?.courseId}/chat`}>
             Chat
           </Link>
         </div>
