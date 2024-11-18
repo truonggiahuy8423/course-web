@@ -1,0 +1,133 @@
+/* index.module.scss */
+.buttonGroup {
+  display: flex;
+  position: fixed;
+  left: 5px;
+  top:200px;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px; // Khoảng cách giữa các nút
+}
+
+.button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 12px 16px;
+  border: none;
+  border-radius: 10px;
+  background-color: transparent;
+  color: #333;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+  outline: none;
+  font-size: 14px;
+
+  &:hover {
+    background-color: #e0e0e0; // Màu nền khi hover
+    transform: scale(1.1); // Phóng to nhẹ khi hover
+  }
+
+  &:focus {
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+  }
+
+  &.active {
+    background-color: #f2f4f7;
+  }
+
+  .icon {
+    font-size: 24px;
+    margin-bottom: 5px; // Khoảng cách giữa biểu tượng và chữ
+  }
+
+  span {
+    font-size: 14px;
+  }
+}
+
+.card {
+  width: 300px;
+  border: none;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  margin: 10px;
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+}
+
+.cardHeader {
+  padding: 20px;
+  color: #fff;
+  height: 200px;
+  text-align: center;
+  position: relative;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+}
+
+.courseIcon {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  width: 30px;
+  height: 30px;
+}
+
+.courseTitle {
+  font-size: 1.25rem;
+  font-weight: bold;
+}
+
+.courseSubtitle {
+  font-size: 0.9rem;
+  font-weight: 300;
+}
+
+.cardBody {
+  padding: 20px;
+  background-color: #fff;
+}
+
+.courseName {
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+.coursePricing {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.oldPrice {
+  text-decoration: line-through;
+  color: gray;
+}
+
+.newPrice {
+  color: #f05454;
+  font-weight: bold;
+}
+
+.courseDetails {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.authorInfo {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.authorImg {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+}
