@@ -11,10 +11,12 @@ const AccessControl = ({ children }: { children: React.ReactNode }) => {
   const [error, setError] = useState<string | null>(null); // State để lưu thông báo lỗi
   const [loading, setLoading] = useState<boolean>(true); // State để kiểm soát quá trình tải
   const [hasAccess, setHasAccess] = useState<boolean>(false); // State để lưu quyền truy cập
+  
   const location = useLocation();
   const navigate = useNavigate();
 
   useEffect(() => {
+    setLoading(true);
     const accessControlRequest: AccessControlRequest = {
       url: location.pathname,
     };
@@ -45,7 +47,7 @@ const AccessControl = ({ children }: { children: React.ReactNode }) => {
       .finally(() => {
         setLoading(false);
       });
-  }, []);
+  }, [location.pathname]);
 
   // Nếu đang trong quá trình tải
   if (loading) {

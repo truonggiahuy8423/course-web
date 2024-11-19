@@ -18,6 +18,9 @@ export type ColumnsType<T> = {
   dataIndex?: string;
   sorterField?: string;
   render?: (value: any, record: T, index: number) => React.ReactNode;
+  filters?: { text: string; value: string }[];
+  onFilter?: (value: any, record: T) => boolean;
+  width?: string | number;
 };
 type Props<T> = {
   columns: ColumnsType<T>[];
@@ -26,7 +29,8 @@ type Props<T> = {
   onClickRow?: (id: number) => void;
   rowKey?: string;
 };
-const Table = <T extends Record<string, any>>(props: Props<T>) => {
+
+const Table = <T, >(props: Props<T>) => {
   const { columns, dataSource, total, onClickRow, rowKey } = props;
   const location = useLocation();
   const navigate = useNavigate();

@@ -55,7 +55,8 @@ const LoginPage = () => {
           dob: res.data.dob,
           countryCode: res.data.countryCode,
           token: res.data.token,
-          avatar: "user_avatar"
+          avatar: "user_avatar",
+          role: res.data.role,
         };
         setUserState(userData);
         localStorage.setItem(userData.avatar, res.data.avatar);
@@ -111,6 +112,7 @@ const LoginPage = () => {
                   type="text"
                   placeholder="Username(email)"
                   autoComplete="true"
+                  maxWidth="100%"
                   disabled={isLoading}
                   // Sử dụng nhiều quy tắc với trường rules
                   register={register("email", {
@@ -130,6 +132,7 @@ const LoginPage = () => {
                   type="password"
                   placeholder="Password"
                   autoComplete="true"
+                  maxWidth="100%"
                   disabled={isLoading}
                   // Sử dụng nhiều quy tắc với trường rules
                   register={register("password", {

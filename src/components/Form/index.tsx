@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import React, { ReactNode } from 'react';
 import styles from './index.module.scss';
 
-export type gapType = 'small' | 'medium';
+export type gapType = 'small' | 'medium' | 'large';
 
 type Props = {
   onSubmit?: React.FormEventHandler<HTMLFormElement>;

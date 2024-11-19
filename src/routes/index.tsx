@@ -36,7 +36,8 @@ import AdminCoursesCreate from "../pages/admin/courses/create";
 import AdminSubject from "../pages/admin/subject";
 import AdminSubjects from "../pages/admin/subjects";
 import AdminSubjectsCreate from "../pages/admin/subjects/create";
-import ProductsPage from "../pages/admin/products"
+import AdminAdministratorsEdit from "../pages/admin/administrators/edit";
+import CourseLayout from "../layout/CourseLayout";
 
 // import About from '../components/About';
 // import Contact from '../components/Contact';
@@ -48,6 +49,111 @@ const AppRoutes = () => {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/products" element={<ProductsPage />} />
         <Route element={<AppLayout />}>
+          <Route element={<CourseLayout isAdmin />}>
+            <Route
+              path="/course/:id/infor"
+              element={
+                <AccessControl>
+                  <Authentication>
+                    <CourseInfor />
+                  </Authentication>
+                </AccessControl>
+              }
+            />
+            <Route
+              path="/course/:id/attendance"
+              element={
+                <AccessControl>
+                  <Authentication>
+                    <CourseAttendance />
+                  </Authentication>
+                </AccessControl>
+              }
+            />
+            <Route
+              path="/course/:id/resource"
+              element={
+                <AccessControl>
+                  <Authentication>
+                    <CourseResource />
+                  </Authentication>
+                </AccessControl>
+              }
+            />
+            <Route
+              path="/course/:id/conversation"
+              element={
+                <AccessControl>
+                  <Authentication>
+                    <CourseConversation />
+                  </Authentication>
+                </AccessControl>
+              }
+            />
+            <Route
+              path="/course/:id/resource/assignment/:assignmentId"
+              element={
+                <AccessControl>
+                  <Authentication>
+                    <CourseResourceAssignment />
+                  </Authentication>
+                </AccessControl>
+              }
+            />
+          </Route>
+          <Route element={<CourseLayout isAdmin />}>
+            <Route
+              path="/admin/course/:id/infor"
+              element={
+                <AccessControl>
+                  <Authentication>
+                    <AdminCourseInfor />
+                  </Authentication>
+                </AccessControl>
+              }
+            />
+            <Route
+              path="/admin/course/:id/attendance"
+              element={
+                <AccessControl>
+                  <Authentication>
+                    <AdminCourseAttendance />
+                  </Authentication>
+                </AccessControl>
+              }
+            />
+            <Route
+              path="/admin/course/:id/resource"
+              element={
+                <AccessControl>
+                  <Authentication>
+                    <AdminCourseResource />
+                  </Authentication>
+                </AccessControl>
+              }
+            />
+            <Route
+              path="/admin/course/:id/resource/assignment/:assignmentId"
+              element={
+                <AccessControl>
+                  <Authentication>
+                    <AdminCourseResourceAssignment />
+                  </Authentication>
+                </AccessControl>
+              }
+            />
+            <Route
+              path="/admin/course/:id/conversation"
+              element={
+                <AccessControl>
+                  <Authentication>
+                    <AdminCourseConversation />
+                  </Authentication>
+                </AccessControl>
+              }
+            />
+          </Route>
+
           <Route element={<AdminLayout />}>
             <Route
               path="/admin/courses"
@@ -182,6 +288,14 @@ const AppRoutes = () => {
               }
             />
             <Route
+              path="/admin/administrator/:id/edit"
+              element={
+                <Authentication>
+                  <AdminAdministratorsEdit />
+                </Authentication>
+              }
+            />
+            <Route
               path="/admin/administrators/create"
               element={
                 <AccessControl>
@@ -234,57 +348,6 @@ const AppRoutes = () => {
             }
           />
 
-          <Route
-            path="/course/:id/infor"
-            element={
-              <AccessControl>
-                <Authentication>
-                  <CourseInfor />
-                </Authentication>
-              </AccessControl>
-            }
-          />
-          <Route
-            path="/course/:id/attendance"
-            element={
-              <AccessControl>
-                <Authentication>
-                  <CourseAttendance />
-                </Authentication>
-              </AccessControl>
-            }
-          />
-          <Route
-            path="/course/:id/resource"
-            element={
-              <AccessControl>
-                <Authentication>
-                  <CourseResource />
-                </Authentication>
-              </AccessControl>
-            }
-          />
-          <Route
-            path="/course/:id/conversation"
-            element={
-              <AccessControl>
-                <Authentication>
-                  <CourseConversation />
-                </Authentication>
-              </AccessControl>
-            }
-          />
-          <Route
-            path="/course/:id/resource/assignment/:assignmentId"
-            element={
-              <AccessControl>
-                <Authentication>
-                  <CourseResourceAssignment />
-                </Authentication>
-              </AccessControl>
-            }
-          />
-
           {/* Các route liên quan đến user */}
           <Route
             path="/user/:id"
@@ -298,56 +361,6 @@ const AppRoutes = () => {
           />
 
           {/* Các route liên quan đến admin course details */}
-          <Route
-            path="/admin/course/:id/infor"
-            element={
-              <AccessControl>
-                <Authentication>
-                  <AdminCourseInfor />
-                </Authentication>
-              </AccessControl>
-            }
-          />
-          <Route
-            path="/admin/course/:id/attendance"
-            element={
-              <AccessControl>
-                <Authentication>
-                  <AdminCourseAttendance />
-                </Authentication>
-              </AccessControl>
-            }
-          />
-          <Route
-            path="/admin/course/:id/resource"
-            element={
-              <AccessControl>
-                <Authentication>
-                  <AdminCourseResource />
-                </Authentication>
-              </AccessControl>
-            }
-          />
-          <Route
-            path="/admin/course/:id/resource/assignment/:assignmentId"
-            element={
-              <AccessControl>
-                <Authentication>
-                  <AdminCourseResourceAssignment />
-                </Authentication>
-              </AccessControl>
-            }
-          />
-          <Route
-            path="/admin/course/:id/conversation"
-            element={
-              <AccessControl>
-                <Authentication>
-                  <AdminCourseConversation />
-                </Authentication>
-              </AccessControl>
-            }
-          />
 
           <Route path="*" element={<NotFound />} />
         </Route>

@@ -7,12 +7,14 @@ interface ComponentContainerProps {
         bottom?: string;
         left?: string;
     };
-    justifyContent?: 'right' | 'left';
+    justifyContent?: 'right' | 'left' | 'center';
 }
 const ComponentContainer: React.FC<ComponentContainerProps> = ({ padding, justifyContent, children }) => {
-    const justifyContentValue = justifyContent === 'right' ? 'flex-end' : 'flex-start';
+    const justifyContentValue = justifyContent === 'right' ? 'flex-end' : (justifyContent === 'left' ? 'flex-start' : 'center');
+
     const containerStyle: React.CSSProperties = {
         display: 'flex',
+        flexDirection: 'row',
         justifyContent: justifyContentValue,
         paddingTop: padding?.top || '0',
         paddingRight: padding?.right || '0',

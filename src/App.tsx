@@ -15,8 +15,8 @@ function App() {
   return (
     <div className="App">
       <LoadingBar />
-      <AppRoutes />
-      <ToastContainer />
+      <AppRoutes /> 
+      <ToastContainer toastStyle={{ zIndex: 10001 }} />
     </div>
   );
 }

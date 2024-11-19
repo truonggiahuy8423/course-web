@@ -8,4 +8,5 @@ export interface LoginResponse {
     countryCode: string;
     token: string;
     avatar: string
+    role: string;
   }

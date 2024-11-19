@@ -34,10 +34,12 @@ const TopNav = () => {
   let avatar = null;
   if (userInfo) {
     avatar = localStorage.getItem(userInfo.avatar);
+    console.log(userInfo);
   }
+  console.log(avatar);
   const avatarSrc =
     avatar !== "null" && avatar !== null
-      ? `data:image/png;base64,${avatar}`
+      ? `data:image/jpeg;base64,${avatar}`
       : "/img/avatar_blank.jpg";
 
   return (

@@ -9,8 +9,7 @@ type GetRequestProps = {
 export async function getRequest<T>(props: GetRequestProps): Promise<T> {
   const { url, headers, params } = props;
   const queryParams = new URLSearchParams(params as any).toString();
-
-  return await fetch(`${url}${queryParams ? `?${queryParams}` : ``}`, {
+    return await fetch(`${url}${queryParams ? `?${queryParams}` : ``}`, {
     method: "GET",
     headers: {
       ...headers,

@@ -5,7 +5,7 @@
 
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
-
+  color: black;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -15,14 +15,16 @@
 }
 
 * {
-  margin: 0px; 
-  padding: 0px; 
+  margin: 0px;
+  padding: 0px;
   box-sizing: border-box;
+  font: inherit;
 }
 
-body, html {
+body,
+html {
   height: 100%;
-  font-family: sans-serif;
+  font-family: sans-serif!important;
 }
 
 /* ------------------------------------ */
@@ -30,8 +32,8 @@ a {
   margin: 0px;
   transition: all 0.4s;
   -webkit-transition: all 0.4s;
--o-transition: all 0.4s;
--moz-transition: all 0.4s;
+  -o-transition: all 0.4s;
+  -moz-transition: all 0.4s;
 }
 
 a:focus {
@@ -43,30 +45,40 @@ a:hover {
 }
 
 /* ------------------------------------ */
-h1,h2,h3,h4,h5,h6 {margin: 0px;}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0px;
+}
 
-p {margin: 0px;}
+p {
+  margin: 0px;
+}
 
-ul, li {
+ul,
+li {
   margin: 0px;
   list-style-type: none;
 }
 
-
 /* ------------------------------------ */
 input {
-display: block;
-  outline: none;
-  border: none !important;
+  display: block;
 }
 
 textarea {
-display: block;
-outline: none;
+  display: block;
+  outline: none;
 }
 
-textarea:focus, input:focus {
-border-color: transparent !important;
+textarea:focus,
+input:focus {
+  outline: none;
+  border: none;
+  /* border-color: transparent !important; */
 }
 
 /* ------------------------------------ */
@@ -83,3 +95,12 @@ button:hover {
 iframe {
   border: none !important;
 }
+
+/* table {
+  font-family: sans-serif;
+}
+
+td {
+  /* /* color: #2c2c2c; */
+  /* font-family: sans-serif;
+}  */

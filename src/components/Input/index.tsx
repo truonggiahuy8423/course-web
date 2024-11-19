@@ -13,6 +13,8 @@ type Props = {
   register?: UseFormRegisterReturn;
   placeholder?: string;
   maxLength?: number;
+  maxWidth?: string;
+  style?: React.CSSProperties;
   errorMessage?: string;
   disabled?: boolean;
 };
@@ -26,9 +28,14 @@ export const Input = (props: Props) => {
     register,
     placeholder,
     maxLength,
+    maxWidth,
+    style,
     errorMessage,
     disabled,
   } = props;
+
+  const customStyle = maxWidth ? { ...style, maxWidth } : style;
+
 
   return (
     <div className={styles.inputContainer}>
@@ -42,6 +49,7 @@ export const Input = (props: Props) => {
         placeholder={placeholder}
         maxLength={maxLength}
         disabled={disabled}
+        style={customStyle}
       />
       {errorMessage && (
         <small className={styles.errorMessage}>{errorMessage}</small>
