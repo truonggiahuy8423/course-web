@@ -23,7 +23,7 @@ type Props = {
   control: any;
 };
 
-export const ChooseStudentModal = (prop: Props) => {
+export const  ChooseStudentModal = (prop: Props) => {
   const { name, control } = prop;
   const [isModalVisible, setIsModalVisible] = useState(false);
   const setIsLoading = useSetRecoilState(loadingState);
@@ -127,6 +127,7 @@ export const ChooseStudentModal = (prop: Props) => {
 
             getStudentList(params)
               .then(async (res) => {
+                console.log('Students data from API:', res.data.students);
                 setStudents(res.data.students);
                 setTotal(res.data.total);
                 setIsLoading(false);
@@ -153,8 +154,12 @@ export const ChooseStudentModal = (prop: Props) => {
             }
           }, [isModalVisible]);
           useEffect(() => {
+            // Gọi hàm getStudents khi các tham số thay đổi
             getStudents();
-          }, [page, pageSize, sort, sortDir, search]);
+          
+            // Log giá trị students khi nó được cập nhật
+            console.log('Updated students:', students);  // Log students bên ngoài getStudents
+          }, [page, pageSize, sort, sortDir, search, students]);
           const columns: ColumnsType<Student>[] = [
             {
               title: "ID",

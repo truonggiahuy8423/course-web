@@ -179,3 +179,21 @@ export const getStudentsByCourseId = async (params: any): Promise<ApiResponse<Ge
     );
   });
 };
+
+export const getStudentsNotInCourse = async (params: any): Promise<ApiResponse<GetStudentsResponse>> => {
+  const token = localStorage.getItem("token");
+
+  return getRequest<ApiResponse<GetStudentsResponse>>({
+    url: `${apiUrl}/get-students-not-in-course`,
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: token ? `Bearer ${token}` : "",
+    },
+    params: params,
+  }).catch((e) => {
+    throw new Error(
+      e?.message || "Access failed/Network problem"
+    );
+  });
+};
+

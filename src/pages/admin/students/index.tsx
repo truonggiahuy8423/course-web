@@ -1,13 +1,7 @@
 import React, { useEffect, useState } from "react";
-import AppLayout from "../../../layout/AppLayout";
-import { Link, useLocation } from "react-router-dom";
-import Button from "../../../components/Button";
-import AdminNavigation from "../../../components/AdminNavigation";
 import { useRecoilState } from "recoil";
 import { adminNavigation } from "../../../states/adminNavigation";
-import Pagination from "../../../components/Pagination";
 import DataTable from "./components/DataTable";
-import { styleText } from "util";
 import './index.module.scss';
 
 const AdminStudents = () => {

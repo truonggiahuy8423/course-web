@@ -13,11 +13,25 @@ import DataTable, {
 import ListLecturer from "../../../../components/ListLecturer";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { loadingState } from "../../../../states/loading";
+import ChooseStudentModal from "./components/StudentModal";
+import FormItem from "../../../../components/FormItem";
+import { CourseCreateFormData } from "../../courses/create";
+import { useForm } from "react-hook-form";
+import dayjs from "dayjs";
 
 const AdminCourseInfor = () => {
   // const {isAdmin} = props;
   const [isLoading, setIsLoading] = useRecoilState(loadingState);
-
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    control,
+  } = useForm<CourseCreateFormData>({
+    defaultValues: {
+      students: [],
+    },
+  });
   const [course, setCourse] = useState<Course>();
   const [students, setStudents] = useState<Student[]>([]);
   const [total, setTotal] = useState(0);
@@ -101,7 +115,12 @@ const AdminCourseInfor = () => {
     <ListLecturer lecturers={course ? course.lecturers : []}/>
     <ComponentContainer justifyContent="left" padding={{left: "20px", top: "20px"}}>
       <Label text="Students" fontSize="medium"></Label>
+      
     </ComponentContainer>
+    <FormItem>
+    <ChooseStudentModal name="students" control={control} courseId={id || ""} />
+    </FormItem>
+
     <DataTable<Student>
                 dataSource={students}
                 // paramsState={{

@@ -10,7 +10,7 @@ interface CourseCardProps {
   duration: string;
   author: string;
   backgroundColor?: string;
-  imageUrl: Uint8Array | string; // Image URL hoặc dữ liệu Base64
+  imageUrl: undefined | string; // Image URL hoặc dữ liệu Base64
   onClick?: () => void;
 }
 
@@ -27,7 +27,7 @@ const CourseCard: React.FC<CourseCardProps> = ({
   onClick
 }) => {
   // Nếu imageUrl là Base64, tạo URL với tiền tố "data:image/png;base64,"
-  const imageSrc = typeof imageUrl === 'string' && imageUrl.startsWith('iVBOR')
+  const imageSrc:undefined | string   = typeof imageUrl === 'string' && imageUrl.startsWith('iVBOR')
     ? `data:image/png;base64,${imageUrl}` // Thêm tiền tố để trình duyệt hiển thị Base64
     : imageUrl; // Nếu là URL hoặc đã có tiền tố, giữ nguyên
 

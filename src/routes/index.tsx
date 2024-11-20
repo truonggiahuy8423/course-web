@@ -38,6 +38,7 @@ import AdminSubjects from "../pages/admin/subjects";
 import AdminSubjectsCreate from "../pages/admin/subjects/create";
 import AdminAdministratorsEdit from "../pages/admin/administrators/edit";
 import CourseLayout from "../layout/CourseLayout";
+import ProductsPage from "../pages/admin/products";
 
 // import About from '../components/About';
 // import Contact from '../components/Contact';
