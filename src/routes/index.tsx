@@ -38,6 +38,8 @@ import AdminSubjects from "../pages/admin/subjects";
 import AdminSubjectsCreate from "../pages/admin/subjects/create";
 import AdminAdministratorsEdit from "../pages/admin/administrators/edit";
 import CourseLayout from "../layout/CourseLayout";
+import StudentLayout from "../layout/StudentLayout";
+import AdminStudentInfor from "../pages/admin/student";
 
 // import About from '../components/About';
 // import Contact from '../components/Contact';
@@ -154,6 +156,18 @@ const AppRoutes = () => {
             />
           </Route>
 
+          <Route element={<StudentLayout isAdmin />}>
+            <Route
+              path="/admin/student/:id/infor"
+              element={
+                <AccessControl>
+                  <Authentication>
+                    <AdminStudentInfor />
+                  </Authentication>
+                </AccessControl>
+              }
+            />
+          </Route>
           <Route element={<AdminLayout />}>
             <Route
               path="/admin/courses"

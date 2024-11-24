@@ -87,6 +87,8 @@ import { Button, Table, Space, message } from 'antd';
 import { getAllStudents } from '../../../../../services/StudentService';
 import { Student } from '../../../../../states/student';
 import styles from './index.module.scss';
+import RowAction from '../RowAction';
+import { StudentResponse } from '../../../../../interfaces/Student';
 
 const DataTable = () => {
   const [studentList, setStudentList] = useState<Student[]>([]);
@@ -94,13 +96,13 @@ const DataTable = () => {
 
   const fetchStudentList = async () => {
     try {
-      const res = await getAllStudents();
+      const res = await getAllStudents({ page: 1, pageSize: 999999 });
       console.log(res);
   
       if (Array.isArray(res.data)) {
         const formattedStudents = res.data.map((student) => ({
           ...student,
-          dob: formatDateString(student.dob),
+          //dob: formatDateString(student.dob),
         }));
         setStudentList(formattedStudents);
       } else {
@@ -139,19 +141,21 @@ const DataTable = () => {
 
   const columns = [
     { title: 'Student ID', dataIndex: 'studentId', key: 'studentId' },
-    { title: 'Name', dataIndex: 'name', key: 'name' },
+    { title: 'Name', dataIndex: 'username', key: 'name' },
     { title: 'Gender', dataIndex: 'gender', key: 'gender' },
     { title: 'Date of Birth', dataIndex: 'dob', key: 'dob' },
     { title: 'Email', dataIndex: 'email', key: 'email' },
     {
       title: 'Actions',
       key: 'actions',
-      render: (_: unknown, record: Student) => (
-        <Space size="middle">
-          <Button color="primary" variant="link">Edit</Button>
-          <Button color="primary" variant="link">Delete</Button>
-        </Space>
-      ),
+      render: (_: any, record: StudentResponse) => {
+        return (
+          <RowAction
+            student={record}
+            afterDone={() => getAllStudents({ page: 1, pageSize: 999999 })}
+          ></RowAction>
+        );
+      },
     },
   ];
 
