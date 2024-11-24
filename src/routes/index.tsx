@@ -38,8 +38,12 @@ import AdminSubjects from "../pages/admin/subjects";
 import AdminSubjectsCreate from "../pages/admin/subjects/create";
 import AdminAdministratorsEdit from "../pages/admin/administrators/edit";
 import CourseLayout from "../layout/CourseLayout";
+<<<<<<< HEAD
 import StudentLayout from "../layout/StudentLayout";
 import AdminStudentInfor from "../pages/admin/student";
+=======
+import ProductsPage from "../pages/admin/products";
+>>>>>>> 6764848deaa9e5fa5d1e1cdece7358c9df8fd697
 
 // import About from '../components/About';
 // import Contact from '../components/Contact';
@@ -49,7 +53,7 @@ const AppRoutes = () => {
     <Router>
       <Routes>
         <Route path="/login" element={<LoginPage />} />
-
+        <Route path="/products" element={<ProductsPage />} />
         <Route element={<AppLayout />}>
           <Route element={<CourseLayout isAdmin />}>
             <Route

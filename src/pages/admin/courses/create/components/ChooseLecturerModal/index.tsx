@@ -62,8 +62,8 @@ export const ChooseLecturerModal = (prop: Props) => {
             };
 
             getLecturerList(params)
-              .then(async (res) => {
-                setLecturers(res.data.lecturers);
+              .then(async (res:any) => {
+                setLecturers(res?.data?.lecturers);
                 setTotal(res.data.total);
                 setIsLoading(false);
               })

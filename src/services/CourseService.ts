@@ -5,7 +5,7 @@ import { CourseCreateDTO } from "../pages/admin/courses/create";
 // import { Course } from "../pages/admin/courses";
 import { getRequest, postRequest } from "../routes/middleware/fetch";
 
-const apiUrl = import.meta.env.VITE_API_URL;
+const apiUrl = "http://localhost:8080";
 
 export const getCourses = async (params: any): Promise<ApiResponse<GetCoursesResponse>> => {
   const token = localStorage.getItem("token");
@@ -179,3 +179,21 @@ export const getStudentsByCourseId = async (params: any): Promise<ApiResponse<Ge
     );
   });
 };
+
+export const getStudentsNotInCourse = async (params: any): Promise<ApiResponse<GetStudentsResponse>> => {
+  const token = localStorage.getItem("token");
+
+  return getRequest<ApiResponse<GetStudentsResponse>>({
+    url: `${apiUrl}/get-students-not-in-course`,
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: token ? `Bearer ${token}` : "",
+    },
+    params: params,
+  }).catch((e) => {
+    throw new Error(
+      e?.message || "Access failed/Network problem"
+    );
+  });
+};
+

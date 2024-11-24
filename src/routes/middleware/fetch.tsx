@@ -66,3 +66,32 @@ export async function postRequest<T, U>(
       throw new Error(e.message || "Network error");
     });
 }
+
+type DeleteRequestProps = {
+  url: string;
+  headers?: object;
+  params?: object;
+};
+
+export async function deleteRequest<T>(props: DeleteRequestProps): Promise<T> {
+  const { url, headers, params } = props;
+  const queryParams = new URLSearchParams(params as any).toString();
+
+  return await fetch(`${url}${queryParams ? `?${queryParams}` : ``}`, {
+    method: "DELETE",
+    headers: {
+      ...headers,
+    },
+  })
+    .then(async (response) => {
+      if (!response.ok) {
+        const res = await response.json();
+        errorFilter(res.error); 
+      }
+      const res: Promise<T> = response.json();
+      return res;
+    })
+    .catch((e) => {
+      throw new Error(e.message || "Network error");
+    });
+}

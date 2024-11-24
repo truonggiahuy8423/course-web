@@ -5,7 +5,7 @@ import { on } from "events";
 import TopNav from "../../components/TopNav";
 import { Outlet } from "react-router-dom";
 
-export const AppLayout = () => {
+export const AppLayout:any = () => {
 
   return (
     <div className={styles.layout}>
