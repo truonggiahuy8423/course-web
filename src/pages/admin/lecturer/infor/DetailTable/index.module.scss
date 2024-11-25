@@ -1,0 +1,38 @@
+.classInforTable {
+    width: 100%;
+    margin: auto 0px;
+    margin-top: 12px;
+    margin-bottom: 26px;
+    border: 1px solid #464646;
+    border-collapse: collapse; /* Gộp border của bảng và các ô */
+    
+    td {
+        font-size: 14px;
+        padding: 5px;
+        padding-left: 10px;
+        width: 50%;
+        height: 34px !important;
+        border: 1px solid #cecece; /* Thêm border cho ô */
+    }
+}
+
+.flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.hidden {
+    .icon {
+        // visibility: hidden;
+        opacity: 0;
+        transition: opacity 0.5s ease;
+    }
+
+    &:hover {
+        .icon {
+            // visibility: visible;
+            opacity: 1;
+        }
+    }
+}
