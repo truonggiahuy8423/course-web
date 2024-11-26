@@ -93,6 +93,7 @@ const AdminCourses = () => {
       dataIndex: "lecturers",
       sorter: false,
       render: (lecturers) => {
+        if (!lecturers) return <></>;
         return lecturers
           .map((lecturer: Lecturer) => lecturer.username)
           .join(", ");
@@ -161,9 +162,10 @@ const AdminCourses = () => {
     console.log(params);
 
     getCourses(params)
-      .then(async (res) => {
-        setCourses(res.data.courses);
-        setTotal(res.data.total);
+      .then(async (res: any) => {
+        console.log(res);
+        setCourses(res.data);
+        setTotal(res.data.total || 10);
         toast.success("Successful get courses");
         await new Promise((resolve) => setTimeout(resolve, 1000));
         setIsLoading(false);

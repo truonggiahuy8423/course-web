@@ -20,7 +20,7 @@ type Props = {
 
 const CourseLayout = (props: Props) => {
   // const [itemId, setAdminNavigation] = useRecoilState(adminNavigation);
-  const {isAdmin} = props;
+  const { isAdmin } = props;
   const [course, setCourse] = useState<Course>();
   const navigate = useNavigate();
 
@@ -47,8 +47,8 @@ const CourseLayout = (props: Props) => {
     <div>
       <div className={styles.headerContainer}>
         <h1>
-          {course?.subject.subjectName}-
-          {course?.subject.subjectId.toString().padStart(4, "0")}.
+          {course?.subject?.subjectName}-
+          {course?.subject?.subjectId.toString().padStart(4, "0")}.
           {course?.courseId.toString().padStart(6, "0")}
         </h1>
       </div>
@@ -66,8 +66,8 @@ const CourseLayout = (props: Props) => {
             </div>
             <div>
               <h5 className={styles.classInforSectionClassName}>
-                {course?.subject.subjectName}-
-                {course?.subject.subjectId.toString().padStart(4, "0")}.
+                {course?.subject?.subjectName}-
+                {course?.subject?.subjectId.toString().padStart(4, "0")}.
                 {course?.courseId.toString().padStart(6, "0")}
               </h5>
               <p style={{ fontSize: "13px", lineHeight: "16px" }}>
@@ -86,23 +86,28 @@ const CourseLayout = (props: Props) => {
           </div>
           <Link
             className={styles.item}
-            to={`${isAdmin ? 'admin' : ''}/course/${course?.courseId}/infor`}
+            to={`${isAdmin ? "admin" : ""}/course/${course?.courseId}/infor`}
           >
             Course Information
           </Link>
           <Link
             className={styles.item}
-            to={`${isAdmin ? 'admin' : ''}/course/${course?.courseId}/attendance`}
+            to={`${isAdmin ? "admin" : ""}/course/${
+              course?.courseId
+            }/attendance`}
           >
             Attendance
           </Link>
           <Link
             className={styles.item}
-            to={`${isAdmin ? 'admin' : ''}/course/${course?.courseId}/resource`}
+            to={`${isAdmin ? "admin" : ""}/course/${course?.courseId}/resource`}
           >
             Resource
           </Link>
-          <Link className={styles.item} to={`${isAdmin ? 'admin' : ''}/course/${course?.courseId}/chat`}>
+          <Link
+            className={styles.item}
+            to={`${isAdmin ? "admin" : ""}/course/${course?.courseId}/chat`}
+          >
             Chat
           </Link>
         </div>
