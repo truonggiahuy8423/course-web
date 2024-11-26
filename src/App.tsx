@@ -5,6 +5,8 @@ import AppRoutes from "./routes";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import LoadingBar from "./components/LoadingBar";
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 
 function App() {
   // const [count, setCount] = useState(0);
