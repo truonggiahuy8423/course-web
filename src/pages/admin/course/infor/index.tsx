@@ -21,6 +21,7 @@ import dayjs from "dayjs";
 
 const AdminCourseInfor = () => {
   // const {isAdmin} = props;
+  const [modalChanged, setModalChanged] = useState(false);
   const [isLoading, setIsLoading] = useRecoilState(loadingState);
   const {
     register,
@@ -62,6 +63,9 @@ const AdminCourseInfor = () => {
     },
   ]
 
+  useEffect(() => {
+    getCourse();
+  }, [modalChanged]);
 
   const { id } = useParams<{ id: string }>();
   console.log("Course ID:", id);
@@ -113,23 +117,26 @@ const AdminCourseInfor = () => {
       <Label text="Lecturers" fontSize="medium"></Label>
     </ComponentContainer>
     <ListLecturer lecturers={course ? course.lecturers : []}/>
-    <ComponentContainer justifyContent="left" padding={{left: "20px", top: "20px"}}>
-      <Label text="Students" fontSize="medium"></Label>
-      
-    </ComponentContainer>
+
     <FormItem>
-    <ChooseStudentModal name="students" control={control} courseId={id || ""} />
+<ChooseStudentModal
+  name="students"
+  control={control}
+  courseId={id || ""}
+  onModalClose={() => setModalChanged((prev) => !prev)} // Toggle state
+/>
+
     </FormItem>
 
     <DataTable<Student>
                 dataSource={students}
-                // paramsState={{
-                //   setPage: setPage,
-                //   setPageSize: setPageSize,
-                //   setSort,
-                //   setSortDir,
-                //   setSearch,
-                // }}
+                paramsState={{
+                  setPage: setPage,
+                  setPageSize: setPageSize,
+                  setSort,
+                  setSortDir,
+                  setSearch,
+                }}
                 page={page}
                 pageSize={pageSize}
                 total={total}
