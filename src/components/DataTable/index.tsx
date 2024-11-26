@@ -44,11 +44,10 @@ const Table = <T, >(props: Props<T>) => {
     _extra: any
   ) => {
     const sorting = Array.isArray(sorter) ? sorter[0] : sorter;
-    // Lấy `sorterField` từ column nếu nó tồn tại
     const sorterField = sorting?.column
       ? (sorting.column as ColumnsType<T>).sorterField
       : "id";
-    query.set("sort", sorterField || "id"); // Sử dụng `sorterField` hoặc 'id' nếu không có
+    query.set("sort", sorterField || "id"); 
     const sorterOrder = (sorting?.order?.toString() || "ascend") as
       | "ascend"
       | "descend";

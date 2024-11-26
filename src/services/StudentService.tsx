@@ -4,7 +4,7 @@ import {
   } from "../interfaces/AccessControl";
   import { ApiResponse } from "../interfaces/ApiResponse";
   import { LoginResponse } from "../interfaces/Auth";
-import { StudentResponse } from "../interfaces/Student";
+import { StudentDetailResponse, StudentResponse } from "../interfaces/Student";
   import { LoginFormData } from "../pages/login";
   import { getRequest, postRequest } from "../routes/middleware/fetch";
   
@@ -31,20 +31,39 @@ import { StudentResponse } from "../interfaces/Student";
 //     });
 //   };
   
-  export const getAllStudents = (
+  export const getAllStudents = async (params: any
   ): Promise<ApiResponse<StudentResponse>> => {
     const token = localStorage.getItem("token");
     console.log(token ? `Bearer  ${token}` : "");
     return getRequest<ApiResponse<StudentResponse>>({
-      url: `${apiUrl}/api/students/all`,
+      url: `${apiUrl}/api/students/get-students`,
       headers: {
         "Content-Type": "application/json",
         Authorization: (token ? `Bearer ${token}` : "")
       },
+      params: params,
     }).catch((e) => {
       throw new Error(
         e?.message || "Login failed/Network problem"
       );
     });;
   };
+
+  export const getStudentById = async (params: any
+  ): Promise<ApiResponse<StudentDetailResponse>> => {
+    const token = localStorage.getItem("token");
+    console.log(token ? `Bearer  ${token}` : "");
+    return getRequest<ApiResponse<StudentDetailResponse>>({
+      url: `${apiUrl}/api/students/info`,
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: (token ? `Bearer ${token}` : "")
+      },
+      params: params,
+    }).catch((e) => {
+      throw new Error(
+        e?.message || "Login failed/Network problem"
+      );
+    });;
+  }; 
   

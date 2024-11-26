@@ -40,6 +40,8 @@ import CourseLayout from "../layout/CourseLayout";
 import ProductsPage from "../pages/admin/products"
 // import ListProduct from "../pages/products";
 import ProductDetail from "../pages/product";
+import StudentLayout from "../layout/StudentLayout";
+import AdminStudentInfor from "../pages/admin/student";
 
 // import About from '../components/About';
 // import Contact from '../components/Contact';
@@ -176,6 +178,18 @@ const AppRoutes = () => {
             />
           </Route>
 
+          <Route element={<StudentLayout isAdmin />}>
+            <Route
+              path="/admin/student/:id/infor"
+              element={
+                <AccessControl>
+                  <Authentication>
+                    <AdminStudentInfor />
+                  </Authentication>
+                </AccessControl>
+              }
+            />
+          </Route>
           <Route element={<AdminLayout />}>
             <Route
               path="/admin/courses"

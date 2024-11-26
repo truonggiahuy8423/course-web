@@ -12,7 +12,6 @@ import ComponentContainer from "../../../../components/ComponentContainer";
 import { Controller } from "react-hook-form";
 import { DatePicker } from "antd";
 import dayjs from "dayjs";
-import moment from "moment";
 import { Dayjs } from "dayjs";
 import CustomDatePicker from "../../../../components/CustomDatePicker";
 import ChooseLecturerModal from "./components/ChooseLecturerModal";
