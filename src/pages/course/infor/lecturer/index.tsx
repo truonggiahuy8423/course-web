@@ -16,10 +16,10 @@ import { userState } from "../../../../states/auth"; // Import user state
 import FormItem from "../../../../components/FormItem";
 import { useForm } from "react-hook-form";
 
-const StudentCourseInfor = () => {
+const LecturerCourseInfor = () => {
   const isLoading = useRecoilValue(loadingState); // Get loading state
   const user = useRecoilValue(userState); // Get user state
-  const isStudent = user?.role === "STUDENT"; // Check if the user is a student
+  const isLecturer = user?.role === "LECTURER"; // Check if the user is a student
 
   const { register, handleSubmit, formState: { errors }, control } = useForm({
     defaultValues: {
@@ -133,4 +133,4 @@ const StudentCourseInfor = () => {
   );
 };
 
-export default StudentCourseInfor;
+export default LecturerCourseInfor;
