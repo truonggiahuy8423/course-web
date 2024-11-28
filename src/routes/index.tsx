@@ -10,7 +10,7 @@ import AdminLecturers from "../pages/admin/lecturers";
 import AdminStudents from "../pages/admin/students";
 import AdminGuests from "../pages/admin/guests";
 import AdminAdministrators from "../pages/admin/administrators";
-import CourseInfor from "../pages/course/infor";
+import CourseInfor from "../pages/course/infor/student";
 import CourseAttendance from "../pages/course/attendance";
 import CourseResource from "../pages/course/resource";
 import CourseConversation from "../pages/course/conversation";
@@ -42,11 +42,18 @@ import ProductsPage from "../pages/admin/products"
 import ProductDetail from "../pages/product";
 import StudentLayout from "../layout/StudentLayout";
 import AdminStudentInfor from "../pages/admin/student";
+import { useRecoilValue } from "recoil";
+import { userState } from "../states/auth";
+
 
 // import About from '../components/About';
 // import Contact from '../components/Contact';
 
 const AppRoutes = () => {
+  const user = useRecoilValue(userState);
+
+  const isStudent = user?.role === "STUDENT";
+
   return (
     <Router>
       <Routes>
@@ -73,6 +80,26 @@ const AppRoutes = () => {
               // </AccessControl>
             }
           />
+        {/* {isStudent && (
+          <>
+            <Route
+              path="/courses"
+              element={
+                <AccessControl>
+                  <Courses />
+                </AccessControl>
+              }
+            />
+            <Route
+              path="/course/:id/infor"
+              element={
+                <AccessControl>
+                  <CourseInfor />
+                </AccessControl>
+              }
+            />
+          </>
+        )} */}
           <Route element={<CourseLayout isAdmin />}>
             <Route
               path="/course/:id/infor"
