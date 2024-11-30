@@ -1,7 +1,7 @@
 // components/TopNav.js
 import React, { useState } from "react";
-import { useRecoilValue } from "recoil";
-import { userState } from "../../states/auth";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { User, userState } from "../../states/auth";
 import styles from "./index.module.scss";
 import { Link } from "react-router-dom";
 import classNames from "classnames";
@@ -11,6 +11,7 @@ const TopNav = () => {
   const [isNotificationOpen, setIsNotificationOpen] = useState(false);
   const [isMessageOpen, setIsMessageOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const [user, setUserState] = useRecoilState<User | null>(userState);
 
   const toggleNotification = () => {
     console.log("ok");
@@ -94,9 +95,16 @@ const TopNav = () => {
               <Link to="/account-management">
                 Quản lý tài khoản
               </Link>
-              <Link to="/logout">
+                <Link
+                onClick={() => {
+                  localStorage.removeItem("token");
+                  localStorage.removeItem("user_avatar");
+                  setUserState(null);
+                }}
+                to="/login"
+                >
                 Đăng xuất
-              </Link>
+                </Link>
             </div>
           </div>
         )}

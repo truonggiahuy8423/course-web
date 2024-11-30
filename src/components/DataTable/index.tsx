@@ -30,7 +30,7 @@ type Props<T> = {
   rowKey?: string;
 };
 
-const Table = <T, >(props: Props<T>) => {
+const Table = <T extends Record<string, any>>(props: Props<T>) => {
   const { columns, dataSource, total, onClickRow, rowKey } = props;
   const location = useLocation();
   const navigate = useNavigate();
