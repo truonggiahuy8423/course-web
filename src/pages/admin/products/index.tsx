@@ -3,6 +3,9 @@ import styles from "./index.module.scss";
 import Sidebar from '../../../components/Sidebar';
 import CourseCard from '../../../components/CourseCard';
 import { GetCourseCard } from "../../../services/ProductService";
+import Button from "../../../components/Button";
+import { ArrowLeftOutlined } from "@ant-design/icons";
+import { useNavigate, useParams } from "react-router-dom";
 
 type Course = {
   id: number;
@@ -21,6 +24,7 @@ const ProductsPage = () => {
   const [expanded, setExpanded] = useState(false);
   const [courses, setCourses] = useState<Course[]>([]);
   const courseListRef = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     GetCourseCard()
@@ -42,8 +46,12 @@ const ProductsPage = () => {
                 id: course.courseId,
                 title: course.subjectName,
                 description: course.description,
-                originalPrice: `${course.price.toLocaleString('vi-VN')} `,
-                salePrice: `${(course.price * 0.7).toLocaleString('vi-VN')} `,
+                originalPrice: course.price 
+    ? `${course.price.toLocaleString('vi-VN')} ` 
+    : 'N/A',
+  salePrice: course.price 
+    ? `${(course.price * 0.7).toLocaleString('vi-VN')} ` 
+    : 'N/A',
                 students: course.numberOfStudents,
                 duration: course.duration,
                 author: course.author,
@@ -82,7 +90,17 @@ const ProductsPage = () => {
         <Sidebar />
       </div>
       <div className={styles.contentArea}>
-        <h1>Khóa học hiện có</h1>
+
+        <div style={{display: "flex", alignItems: "center", gap: 20}}>
+          <h1>Khóa học hiện có</h1>
+          <Button
+                type="button"
+                onClick={() => navigate("/courses")}
+                className={`${styles.classInforSectionBackBtn} ${styles.highlightButtonReverse}`}
+              >
+                Tới khóa học
+              </Button>
+        </div>
 
         {!expanded && (
           <button className={`${styles.arrowButton} ${styles.left}`} onClick={() => scroll('left')}>
@@ -94,6 +112,7 @@ const ProductsPage = () => {
           {courses.map((course) => (
             <div key={course.id} className={styles.courseCardWrapper}>
               <CourseCard
+                courseId={course.id}
                 imageUrl={course.imageUrl} // Chuyển qua byte array hoặc URL
                 title={course.title}
                 description={course.description}

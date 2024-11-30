@@ -1,7 +1,9 @@
 import React from 'react';
 import styles from './index.module.scss';
+import { useNavigate, useParams } from "react-router-dom";
 
 interface CourseCardProps {
+  courseId: number;
   title: string;
   description: string;
   originalPrice: string;
@@ -15,6 +17,7 @@ interface CourseCardProps {
 }
 
 const CourseCard: React.FC<CourseCardProps> = ({ 
+  courseId,
   title, 
   description, 
   originalPrice, 
@@ -31,11 +34,16 @@ const CourseCard: React.FC<CourseCardProps> = ({
     ? `data:image/png;base64,${imageUrl}` // Thêm tiền tố để trình duyệt hiển thị Base64
     : imageUrl; // Nếu là URL hoặc đã có tiền tố, giữ nguyên
 
+    const navigate = useNavigate(); // Move useNavigate inside the component
+
+    const handleNavigate = () => {
+      navigate(`/course/${courseId}`); // Replace "123" with the actual course ID if necessary
+    };
   return (
     <button 
       className={styles.courseCard} 
       style={{ backgroundColor }}
-      onClick={onClick} 
+      onClick={onClick || handleNavigate} 
     >
       <div className={styles.courseCardImageWrapper}>
         <img src={imageSrc} alt={title} className={styles.courseCardImage} />

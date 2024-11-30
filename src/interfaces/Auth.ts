@@ -9,4 +9,5 @@ export interface LoginResponse {
     token: string;
     avatar: string
     role: string;
+    balance: number;
   }
