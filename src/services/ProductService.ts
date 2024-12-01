@@ -1,19 +1,18 @@
 import { ApiResponse } from "../interfaces/ApiResponse";
 import { getRequest, postRequest } from "../routes/middleware/fetch";
+import { GetCourseCardResponse } from "../interfaces/CourseCard";
 
 const apiUrl = "http://localhost:8080";
 const token = localStorage.getItem("token");
-console.log(token)
-export const GetCourseCard = (
-  request?: any // Nếu bạn muốn gửi dữ liệu đi trong body, tham số này sẽ được sử dụng
-): Promise<ApiResponse<any>> => {
-  return postRequest<ApiResponse<any>, any>({
-    url: `${apiUrl}/cards`, // URL API
+export const getCourseCard = async (params?: any): Promise<ApiResponse<GetCourseCardResponse>> => {
+
+  return getRequest<ApiResponse<GetCourseCardResponse>>({
+    url: `${apiUrl}/cards`,
     headers: {
       "Content-Type": "application/json",
-      Authorization: token ? `Bearer ${token}` : "", // Thêm header Authorization nếu có token
+      Authorization: token ? `Bearer ${token}` : "",
     },
-    body: request, // Gửi dữ liệu trong body nếu có
+    params: params,
   }).catch((e) => {
     throw new Error(
       e?.message || "Login failed/Network problem"

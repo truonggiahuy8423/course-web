@@ -1,10 +1,14 @@
 import React, { useRef, useState, useEffect } from "react";
 import styles from "./index.module.scss";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import Sidebar from '../../../components/Sidebar';
 import CourseCard from '../../../components/CourseCard';
-import { GetCourseCard } from "../../../services/ProductService";
+import { getCourseCard } from "../../../services/ProductService";
+import { loadingState } from "../../../states/loading";
+import ComponentContainer from "../../../components/ComponentContainer";
+import { Table as ATable, Pagination } from "antd";
 
-type Course = {
+export type CourseCard = {
   id: number;
   title: string;
   description: string;
@@ -14,55 +18,70 @@ type Course = {
   duration: string;
   author: string;
   backgroundColor: string;
-  imageUrl: Uint8Array | string; // Cập nhật kiểu dữ liệu ảnh
+  imageUrl: Uint8Array | string | undefined; // Cập nhật kiểu dữ liệu ảnh
 };
 
 const ProductsPage = () => {
   const [expanded, setExpanded] = useState(false);
-  const [courses, setCourses] = useState<Course[]>([]);
+  const [courses, setCourses] = useState<CourseCard[]>([]);
+  const [total, setTotal] = useState(0);
+  const setLoading = useSetRecoilState(loadingState);
   const courseListRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    GetCourseCard()
-      .then((response) => {
-        console.log("Full response từ API:", response);
+    fetchCourses();
+  }, [location.search]);
 
-        if (response) {
-          const data = response.data || response;
-          console.log("Data:", data);
+  const fetchCourses = async () => {
+    setLoading(true);
 
-          if (Array.isArray(data)) {
-            const formattedCourses = data.map((course: any) => {
-              // Chuyển đổi ảnh nếu thumbnail là mảng byte (LONGBLOB)
-              const imageUrl = Array.isArray(course.thumbnail)
-                ? new Uint8Array(course.thumbnail) // Chuyển thumbnail thành Uint8Array
-                : course.thumbnail || 'https://via.placeholder.com/150'; // fallback nếu không có thumbnail
+    const queryParams = new URLSearchParams(location.search);
+    const page = queryParams.get("page") || "1";
+    const pageSize = queryParams.get("pageSize") || "10";
+    const sort = queryParams.get("sort") || "1";
+    const sortDir = queryParams.get("sortDir") || "asc";
 
-              return {
-                id: course.courseId,
-                title: course.subjectName,
-                description: course.description,
-                originalPrice: `${course.price.toLocaleString('vi-VN')} `,
-                salePrice: `${(course.price * 0.7).toLocaleString('vi-VN')} `,
-                students: course.numberOfStudents,
-                duration: course.duration,
-                author: course.author,
-                backgroundColor: '#f4f4f4',
-                imageUrl: imageUrl // Truyền ảnh dưới dạng Uint8Array
-              };
-            });
-            setCourses(formattedCourses);
-          } else {
-            console.error("Dữ liệu trả về không phải là mảng.");
-          }
-        } else {
-          console.error("API không trả về dữ liệu hợp lệ hoặc thiếu thuộc tính data.");
-        }
-      })
-      .catch((error) => {
-        console.error("Lỗi khi lấy dữ liệu từ API:", error.message);
-      });
-  }, []);
+    const params = {
+      page: Number(page),
+      pageSize: Number(pageSize),
+      sort,
+      sortDir,
+    };
+
+    try{
+      const result = await getCourseCard(params);
+      const data = result.data.courses;
+
+      if (Array.isArray(data)) {
+        const formattedCourses = data.map((course: any) => {
+          // Chuyển đổi ảnh nếu thumbnail là mảng byte (LONGBLOB)
+          const imageUrl = Array.isArray(course.thumbnail)
+            ? new Uint8Array(course.thumbnail) // Chuyển thumbnail thành Uint8Array
+            : course.thumbnail || 'https://via.placeholder.com/150'; // fallback nếu không có thumbnail
+
+          return {
+            id: course.courseId,
+            title: course.subjectName,
+            description: course.description,
+            originalPrice: `${course.price.toLocaleString('vi-VN')} `,
+            salePrice: `${(course.price * 0.7).toLocaleString('vi-VN')} `,
+            students: course.numberOfStudents,
+            duration: course.duration,
+            author: course.author,
+            backgroundColor: '#f4f4f4',
+            imageUrl: imageUrl // Truyền ảnh dưới dạng Uint8Array
+          };
+        });
+
+        setCourses(formattedCourses);
+        setTotal(result.data.total);
+      }
+    } catch(e) {
+      console.error(e);
+    } finally {
+      setLoading(false);
+    }
+  }
 
   const scroll = (direction: string) => {
     if (courseListRef.current && !expanded) {
@@ -94,6 +113,7 @@ const ProductsPage = () => {
           {courses.map((course) => (
             <div key={course.id} className={styles.courseCardWrapper}>
               <CourseCard
+                id={course.id}
                 imageUrl={course.imageUrl} // Chuyển qua byte array hoặc URL
                 title={course.title}
                 description={course.description}
@@ -107,15 +127,15 @@ const ProductsPage = () => {
           ))}
         </div>
 
-        {!expanded && (
+        {/* {!expanded && (
           <button className={`${styles.arrowButton} ${styles.right}`} onClick={() => scroll('right')}>
             &gt;
           </button>
-        )}
+        )} */}
 
-        <div className={styles.expanderButton} onClick={toggleExpandedView}>
+        {/* <div className={styles.expanderButton} onClick={toggleExpandedView}>
           {expanded ? "Ẩn bớt" : "Xem tất cả"}
-        </div>
+        </div> */}
       </div>
     </div>
   );
