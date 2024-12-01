@@ -20,7 +20,7 @@ const StudentCourseInfor = () => {
   const isLoading = useRecoilValue(loadingState); // Get loading state
   const user = useRecoilValue(userState); // Get user state
   const isStudent = user?.role === "STUDENT"; // Check if the user is a student
-console.log(user?.role);
+
   const { register, handleSubmit, formState: { errors }, control } = useForm({
     defaultValues: {
       students: [],
@@ -35,7 +35,7 @@ console.log(user?.role);
   const [sort, setSort] = useState("");
   const [sortDir, setSortDir] = useState("asc");
   const [search, setSearch] = useState("");
-  
+
   const columns: ColumnsType<Student>[] = [
     {
       title: "ID",
@@ -104,7 +104,7 @@ console.log(user?.role);
       <ComponentContainer justifyContent="left" padding={{ left: "20px", top: "20px" }}>
         <Label text="Information" fontSize="medium"></Label>
       </ComponentContainer>
-
+      <Table course={course} isAdmin/>
       <ComponentContainer justifyContent="left" padding={{ left: "20px", top: "20px" }}>
         <Label text="Lecturers" fontSize="medium"></Label>
       </ComponentContainer>
