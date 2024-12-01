@@ -1,8 +1,11 @@
 import React, { useRef, useState, useEffect } from "react";
 import styles from "./index.module.scss";
-import Sidebar from '../../../components/Sidebar';
-import CourseCard from '../../../components/CourseCard';
-import { getCourseCard, GetRecommendation } from "../../../services/ProductService";
+import Sidebar from "../../../components/Sidebar";
+import CourseCard from "../../../components/CourseCard";
+import {
+  getCourseCard,
+  GetRecommendation,
+} from "../../../services/ProductService";
 import { useSetRecoilState } from "recoil";
 import { loadingState } from "../../../states/loading";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -28,15 +31,15 @@ const ProductsPage = () => {
 
   const scroll = (direction: string) => {
     if (courseListRef.current && !expanded) {
-      const scrollAmount = direction === 'left' ? -300 : 300;
+      const scrollAmount = direction === "left" ? -300 : 300;
       courseListRef.current.scrollBy({
         left: scrollAmount,
-        behavior: 'smooth'
+        behavior: "smooth",
       });
- }
+    }
+  };
 
- const toggleExpandedView = () => setExpanded(!expanded);
-
+  const toggleExpandedView = () => setExpanded(!expanded);
 
   useEffect(() => {
     GetRecommendation()
@@ -52,19 +55,19 @@ const ProductsPage = () => {
               // Chuyển đổi ảnh nếu thumbnail là mảng byte (LONGBLOB)
               const imageUrl = Array.isArray(course.thumbnail)
                 ? new Uint8Array(course.thumbnail) // Chuyển thumbnail thành Uint8Array
-                : course.thumbnail || 'https://via.placeholder.com/150'; // fallback nếu không có thumbnail
+                : course.thumbnail || "https://via.placeholder.com/150"; // fallback nếu không có thumbnail
 
               return {
                 id: course.courseId,
                 title: course.subjectName,
                 description: course.description,
-                originalPrice: `${course.price.toLocaleString('vi-VN')} `,
-                salePrice: `${(course.price * 0.7).toLocaleString('vi-VN')} `,
+                originalPrice: `${course.price.toLocaleString("vi-VN")} `,
+                salePrice: `${(course.price * 0.7).toLocaleString("vi-VN")} `,
                 students: course.numberOfStudents,
                 duration: course.duration,
                 author: course.author,
-                backgroundColor: '#f4f4f4',
-                imageUrl: imageUrl // Truyền ảnh dưới dạng Uint8Array
+                backgroundColor: "#f4f4f4",
+                imageUrl: imageUrl, // Truyền ảnh dưới dạng Uint8Array
               };
             });
             setRecommendation(formattedCourses);
@@ -72,14 +75,15 @@ const ProductsPage = () => {
             console.error("Dữ liệu trả về không phải là mảng.");
           }
         } else {
-          console.error("API không trả về dữ liệu hợp lệ hoặc thiếu thuộc tính data.");
+          console.error(
+            "API không trả về dữ liệu hợp lệ hoặc thiếu thuộc tính data."
+          );
         }
       })
       .catch((error) => {
         console.error("Lỗi khi lấy dữ liệu từ API:", error.message);
       });
-}, []);
-
+  }, []);
 
   const [courses, setCourses] = useState<CourseCard[]>([]);
   const [total, setTotal] = useState(0);
@@ -100,7 +104,6 @@ const ProductsPage = () => {
     const sort = queryParams.get("sort") || "1";
     const sortDir = queryParams.get("sortDir") || "asc";
 
-            
     const params = {
       page: Number(page),
       pageSize: Number(pageSize),
@@ -116,19 +119,19 @@ const ProductsPage = () => {
         const formattedCourses = data.map((course: any) => {
           const imageUrl = Array.isArray(course.thumbnail)
             ? new Uint8Array(course.thumbnail)
-            : course.thumbnail || 'https://via.placeholder.com/150';
+            : course.thumbnail || "https://via.placeholder.com/150";
 
           return {
             id: course.courseId,
             title: course.subjectName,
             description: course.description,
-            originalPrice: `${course.price.toLocaleString('vi-VN')} `,
-            salePrice: `${(course.price * 0.7).toLocaleString('vi-VN')} `,
+            originalPrice: `${course.price.toLocaleString("vi-VN")} `,
+            salePrice: `${(course.price * 0.7).toLocaleString("vi-VN")} `,
             students: course.numberOfStudents,
             duration: course.duration,
             author: course.author,
-            backgroundColor: '#f4f4f4',
-            imageUrl: imageUrl
+            backgroundColor: "#f4f4f4",
+            imageUrl: imageUrl,
           };
         });
 
@@ -158,12 +161,18 @@ const ProductsPage = () => {
         <h1>Recommendation</h1>
 
         {!expanded && (
-          <button className={`${styles.arrowButton} ${styles.left}`} onClick={() => scroll('left')}>
+          <button
+            className={`${styles.arrowButton} ${styles.left}`}
+            onClick={() => scroll("left")}
+          >
             &lt;
           </button>
         )}
 
-        <div className={`${styles.courseList} ${expanded ? styles.expanded : ''}`} ref={courseListRef}>
+        <div
+          className={`${styles.courseList} ${expanded ? styles.expanded : ""}`}
+          ref={courseListRef}
+        >
           {recommendation.map((course) => (
             <div key={course.id} className={styles.courseCardWrapper}>
               <CourseCard
@@ -179,7 +188,6 @@ const ProductsPage = () => {
             </div>
           ))}
         </div>
-
       </div>
       <div className={styles.contentArea}>
         <h1>All products</h1>
