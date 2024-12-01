@@ -40,12 +40,12 @@ type Props<T> = {
   onClickRow?: (id: number) => void;
   rowKey?: string;
   paramsState?: paramsState;
-  page: string;
-  pageSize: string;
-  height?: string; // Add optional height prop
+  page?: string;
+  pageSize?: string;
+  height?: string; // Add optional   height prop
 };
 
-const Table = <T, >(props: Props<T>) => {
+const Table = <T, >(props: Props<T | any>) => {
   const {
     columns,
     dataSource,

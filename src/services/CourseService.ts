@@ -170,7 +170,7 @@ export const getStudentsByCourseId = async (params: any): Promise<ApiResponse<Ge
     url: `${apiUrl}/get-students-by-course-id`,
     headers: {
       "Content-Type": "application/json",
-      Authorization: (token ? `Bearer ${token}` : ""),
+      Authorization: token ? `Bearer ${token}` : "",
     },
     params: params,
   }).catch((e) => {
@@ -197,3 +197,39 @@ export const getStudentsNotInCourse = async (params: any): Promise<ApiResponse<G
   });
 };
 
+export const updateStudentInCourses = (
+  request: any, // Thay đổi kiểu dữ liệu của request nếu cần
+): Promise<ApiResponse<any>> => {
+  const token = localStorage.getItem("token");
+
+  return postRequest<ApiResponse<any>, typeof request>({
+    url: `${apiUrl}/update-student-in-courses`, // Đổi URL phù hợp với endpoint của bạn
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: token ? `Bearer ${token}` : "",
+    },
+    body: request,
+  }).catch((e) => {
+    throw new Error(
+      e?.message || "Update failed/Network problem"
+    );
+  });
+};
+
+
+export const getStudentsNotPageable = async (params: any): Promise<ApiResponse<GetStudentsResponse>> => {
+  const token = localStorage.getItem("token");
+
+  return getRequest<ApiResponse<GetStudentsResponse>>({
+    url: `${apiUrl}/get-student-not-pageable`,  // Thay đổi URL để gọi API đúng
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: token ? `Bearer ${token}` : "",
+    },
+    params: params,
+  }).catch((e) => {
+    throw new Error(
+      e?.message || "Access failed/Network problem"
+    );
+  });
+};

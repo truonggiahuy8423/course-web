@@ -4,7 +4,6 @@ import LoginPage from "../pages/login";
 import Authentication from "./interceptor/Authentication";
 import AccessControl from "./interceptor/AccessControl";
 import NotFound from "../pages/not-found";
-
 import Courses from "../pages/courses";
 import AdminCourses from "../pages/admin/courses";
 import AdminLecturers from "../pages/admin/lecturers";
@@ -38,10 +37,11 @@ import AdminSubjects from "../pages/admin/subjects";
 import AdminSubjectsCreate from "../pages/admin/subjects/create";
 import AdminAdministratorsEdit from "../pages/admin/administrators/edit";
 import CourseLayout from "../layout/CourseLayout";
+import ProductsPage from "../pages/admin/products"
+// import ListProduct from "../pages/products";
+import ProductDetail from "../pages/product";
 import StudentLayout from "../layout/StudentLayout";
 import AdminStudentInfor from "../pages/admin/student";
-
-import ProductsPage from "../pages/admin/products";
 import { useRecoilValue } from "recoil";
 import { userState } from "../states/auth";
 
@@ -60,6 +60,26 @@ const AppRoutes = () => {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/products" element={<ProductsPage />} />
         <Route element={<AppLayout />}>
+          {/* <Route
+            path="/products"
+            element={
+              // <AccessControl>
+              <Authentication>
+                <ListProduct />
+              </Authentication>
+              // </AccessControl>
+            }
+          /> */}
+          <Route
+            path="/product/:id"
+            element={
+              // <AccessControl>
+              <Authentication>
+                <ProductDetail />
+              </Authentication>
+              // </AccessControl>
+            }
+          />
         {/* {isStudent && (
           <>
             <Route

@@ -18,7 +18,7 @@ import RowAction from "./components/RowAction";
 import ComponentContainer from "../../../components/ComponentContainer";
 import Input from "../../../components/Input";
 import SearchInput from "../../../components/SearchInput";
-import { Course, Lecturer } from "../../../interfaces/Course";
+import { Course, GetCoursesResponse, Lecturer } from "../../../interfaces/Course";
 
 export type Props = {
   data: Course[];
@@ -93,6 +93,7 @@ const AdminCourses = () => {
       dataIndex: "lecturers",
       sorter: false,
       render: (lecturers) => {
+        if (!lecturers) return <></>;
         return lecturers
           .map((lecturer: Lecturer) => lecturer.username)
           .join(", ");
@@ -162,8 +163,9 @@ const AdminCourses = () => {
 
     getCourses(params)
       .then(async (res) => {
+        console.log(res);
         setCourses(res.data.courses);
-        setTotal(res.data.total);
+        setTotal(res.data.total || 10);
         toast.success("Successful get courses");
         await new Promise((resolve) => setTimeout(resolve, 1000));
         setIsLoading(false);

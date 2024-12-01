@@ -8,7 +8,7 @@ import ComponentContainer from "../../../../../../components/ComponentContainer"
 import Label from "../../../../../../components/Label";
 import { useSetRecoilState } from "recoil";
 import { loadingState } from "../../../../../../states/loading";
-import { getStudentsByCourseId, getStudentsNotInCourse } from "../../../../../../services/CourseService";
+import { getStudentsByCourseId, getStudentList, updateStudentInCourses,getStudentsNotPageable } from "../../../../../../services/CourseService";
 import { toast } from "react-toastify";
 import { Student } from "../../../../../../interfaces/Course";
 
@@ -16,6 +16,7 @@ type Props = {
   name: string;
   control: any;
   courseId: string;
+  onModalClose?: () => void;
 };
 
 export const ChooseStudentModal = (prop: Props) => {
@@ -23,11 +24,8 @@ export const ChooseStudentModal = (prop: Props) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const setIsLoading = useSetRecoilState(loadingState);
 
-  const showModal = () => {
-    setIsModalVisible(true);
-  };
-
   const handleCancel = () => {
+    console.log("handleCancel called");
     setIsModalVisible(false);
   };
 
@@ -45,8 +43,8 @@ export const ChooseStudentModal = (prop: Props) => {
           const [sort, setSort] = useState("");
           const [sortDir, setSortDir] = useState("asc");
           const [search, setSearch] = useState("");
-
-          const [students2, setStudents2] = useState<Student[]>([]);
+          const [fullStudent, setFullStudent] = useState<Student[]>([]);
+          const [students2, setStudents2] = useState<Student[]>([]); 
           const [total2, setTotal2] = useState(0);
           const [page2, setPage2] = useState("1");
           const [pageSize2, setPageSize2] = useState("6");
@@ -70,90 +68,101 @@ export const ChooseStudentModal = (prop: Props) => {
           ];
 
           const fetchPickedStudents = async () => {
-            setIsLoading(true);
-  
-              const params = {
-                page: Number(page2),
-                pageSize: Number(pageSize2),
-                sort,
-                sortDir,
-                search,
-                courseId,
-              };
-              getStudentsByCourseId(params)
-                .then(async (res) => {
-                  setTempList(res.data.students );
-                  console.log("TempList from API:", res.data.students);
-                  setTotal2(res.data.total);
-                  setIsLoading(false);
-                }).catch((err) => {
-                  toast.error(err);
-                  setIsLoading(false);
-                });
+            const params = {
+              page2: Number(page2),
+              pageSize2: Number(pageSize2),
+              sort,
+              sortDir,
+              search,
+              courseId,
+            };
+            try {
+              const res = await getStudentsByCourseId(params);
+
+              setTempList(res.data.students);
+              setTotal2(res.data.total);
+              console.log("TempList from API:", res.data.students);
+            } catch (err) {
+              toast.error("Failed to fetch picked students");
+            }
           };
-          // useEffect(() => {
-          //   const startIndex = (Number(page2) - 1) * Number(pageSize2);
-          //   const endIndex = startIndex + Number(pageSize2);
-          //   setStudents2(tempList.slice(startIndex, endIndex));
-          //   setTotal2(tempList.length);
-          //   console.log("TempList state updated:", tempList);
-
-
-          // }, [tempList, page2, pageSize2]);
-
+          const fetchFullStudentList = async () => {
+            const params = {
+              courseId,
+            };
+            try {
+              const res = await getStudentsNotPageable(params); // Gọi API với chỉ courseId
+              setFullStudent(res.data); // Set danh sách sinh viên vào fullStudent
+              console.log("API Response:", res.data);
+              console.log(fullStudent)
+            } catch (err) {
+              toast.error("Failed to fetch full student list");
+            }
+          };
           
 
-
           const fetchAvailableStudents = async () => {
-            setIsLoading(true);
+            const params = {
+              page: Number(page),
+              pageSize: Number(pageSize),
+              sort,
+              sortDir,
+              search,
+              courseId,
+            };
             try {
-              const params = {
-                page: Number(page),
-                pageSize: Number(pageSize),
-                sort,
-                sortDir,
-                search,
-                courseId,
-              };
-              const res = await getStudentsNotInCourse(params);
+              const res = await getStudentList(params);
+              console.log(params);
               setStudents(res.data.students);
               setTotal(res.data.total);
             } catch (err) {
-              toast.error("Failed to fetch available students.");
-            } finally {
-              setIsLoading(false);
+              toast.error("Failed to fetch available students");
             }
           };
 
           const fetchData = async () => {
             try {
-              // In ra trạng thái của isModalVisible trước khi gọi API
-              console.log("isModalVisible before API call:", isModalVisible);
-              
-              setIsLoading(true);
-
+              console.log("Fetching data...");
               await Promise.all([fetchPickedStudents(), fetchAvailableStudents()]);
-              console.log("isModalVisible after API call:", isModalVisible);
+              console.log("Data fetched successfully.");
             } catch (err) {
-              console.log("Error:", err);  // Log lỗi nếu có
-              toast.error("Lỗi khi tải dữ liệu");
-              setIsLoading(false); // Đảm bảo setIsLoading(false) được gọi nếu có lỗi
+              console.error("Error fetching data:", err);
+              toast.error("Lỗi khi tải dữ liệu.");
             }
           };
-          
-          
+
+          const resetState = () => {
+            setPage("1");
+            setPageSize("6");
+            setSort("");
+            setSortDir("asc");
+            setSearch("");
+          };
+
           useEffect(() => {
-            if (isModalVisible) {
-              fetchData();
-              setPage("1");
-              setPageSize("6");
-              setSort("");
-              setSortDir("asc");
-              setSearch("");
-              
-            }
-       
+            fetchAvailableStudents();
+
+          }, [page, pageSize, sort, sortDir, search]);
+          useEffect(() => {
+            fetchPickedStudents();
+            console.log("Call reset")
+          }, [page2, pageSize2, sort, sortDir, search]);
+          useEffect(() => {
+            fetchPickedStudents();
+            console.log("isModalVisible changed:", isModalVisible);
+            fetchFullStudentList();
           }, [isModalVisible]);
+
+          const showModal = async () => {
+            console.log("Opening modal...");
+            setIsModalVisible(true); // Open modal first
+            try {
+              await fetchData(); // Fetch data after modal opens
+              console.log("Data fetched successfully.");
+            } catch (err) {
+              console.error("Error fetching data:", err);
+            }
+          };
 
           const columns: ColumnsType<Student>[] = [
             {
@@ -174,17 +183,22 @@ export const ChooseStudentModal = (prop: Props) => {
             {
               title: "Action",
               render: (_, record) => {
-                const isSelected = tempList.some((student) => student.studentId === record.studentId);
+                const isSelected = fullStudent.some((student) => student.studentId === record.studentId);
                 return (
                   <input
                     type="checkbox"
                     checked={isSelected}
                     onChange={(e) => {
-                      if (e.target.checked) {
-                        setTempList((prev) => [...prev, record]);
-                      } else {
-                        setTempList((prev) => prev.filter((student) => student.studentId !== record.studentId));
-                      }
+                      setFullStudent((prev) => {
+                        let newList = fullStudent ;
+                        if (e.target.checked) {
+                          newList = [...prev, record]; // Add student to tempList
+                        } else {
+                          newList = prev.filter((student) => student.studentId !== record.studentId); // Remove student from tempList
+                        }
+                        console.log("Updated tempList:", newList); // Log tempList each time it changes
+                        return newList;
+                      });
                     }}
                   />
                 );
@@ -196,7 +210,9 @@ export const ChooseStudentModal = (prop: Props) => {
           return (
             <div style={{ width: "100%" }}>
               <ComponentContainer justifyContent="left" padding={{ bottom: "10px" }}>
-                <Label text="Students" fontSize="medium" />
+                <ComponentContainer justifyContent="left" padding={{ left: "20px", top: "20px" }}>
+                  <Label text="Students" fontSize="medium"></Label>
+                </ComponentContainer>
                 <Button
                   type="button"
                   style={{
@@ -214,9 +230,21 @@ export const ChooseStudentModal = (prop: Props) => {
                 style={{ top: 60 }}
                 title="Manage Students"
                 visible={isModalVisible}
-                onOk={() => {
-                  field.onChange(tempList);
-                  setIsModalVisible(false);
+                onOk={async () => {
+                  try {
+                    const requestBody = {
+                      courseId,
+                      students: fullStudent.map(student => student.studentId), // List of studentIds
+                    };
+                    console.log("Request Body:", requestBody);
+                    await updateStudentInCourses(requestBody);
+                    toast.success("Cập nhật học sinh vào khóa học thành công!");
+                    field.onChange(tempList);
+                    setIsModalVisible(false);
+                  } catch (err) {
+                    console.error("Error updating students:", err);
+                    toast.error("Cập nhật học sinh thất bại!");
+                  }
                 }}
                 onCancel={handleCancel}
                 width={1000}
@@ -224,17 +252,17 @@ export const ChooseStudentModal = (prop: Props) => {
                 <h4>Picked Students</h4>
                 <DataTable<Student>
                   height="180px"
-                  dataSource={students2}
-                  paramsState={{
-                    setPage: setPage2,
-                    setPageSize: setPageSize2,
-                    setSort,
-                    setSortDir,
-                    setSearch,
-                  }}
-                  page={page2}
-                  pageSize={pageSize2}
-                  total={total2}
+                  dataSource={fullStudent}
+                  // paramsState={{
+                  //   setPage: setPage2,
+                  //   setPageSize: setPageSize2,
+                  //   setSort,
+                  //   setSortDir,
+                  //   setSearch,
+                  // }}
+                  // page={page2}
+                  // pageSize={pageSize2}
+                  // total={total2}
                   columns={columns2}
                 />
                 <h4>Available Students</h4>

@@ -1,0 +1,43 @@
+.childrenFolder {
+    width: 100%;
+    margin: 15px 0px;
+    padding: 30px;
+    padding-top: 50px;
+    position: relative;
+    border-style: solid;
+    border-color: #898989;
+    border-radius: 10px;
+    border-width: 0.5px;
+}
+
+.childrenFolderName {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 30px;
+    height: 30px;
+    padding: 5px 20px;
+    background-color: #2C2C2C;
+    color: white;
+    font-size: 13px;
+}
+
+.childrenFolderComponentContainer {
+    display: flex;
+    justify-content: space-between;
+    top: 10px;
+    left: 20px;
+    width: 97%;
+    position: absolute;
+}
+
+.rootFolder {
+    padding: 0px 30px;
+    padding-top: 15px;
+}
+
+.resourceItem {
+    width: 100%;
+    margin: 15px 0px;
+    padding: 0px 3%;
+}

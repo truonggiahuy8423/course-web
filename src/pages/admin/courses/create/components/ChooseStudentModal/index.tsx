@@ -159,7 +159,7 @@ export const  ChooseStudentModal = (prop: Props) => {
           
             // Log giá trị students khi nó được cập nhật
             console.log('Updated students:', students);  // Log students bên ngoài getStudents
-          }, [page, pageSize, sort, sortDir, search, students]);
+          }, [page, pageSize, sort, sortDir, search]);
           const columns: ColumnsType<Student>[] = [
             {
               title: "ID",
