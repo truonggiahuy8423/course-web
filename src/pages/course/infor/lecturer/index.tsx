@@ -104,7 +104,7 @@ const LecturerCourseInfor = () => {
       <ComponentContainer justifyContent="left" padding={{ left: "20px", top: "20px" }}>
         <Label text="Information" fontSize="medium"></Label>
       </ComponentContainer>
-
+      <Table course={course} isAdmin/>
       <ComponentContainer justifyContent="left" padding={{ left: "20px", top: "20px" }}>
         <Label text="Lecturers" fontSize="medium"></Label>
       </ComponentContainer>
