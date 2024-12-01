@@ -20,4 +20,20 @@ export const GetCourseCard = (
     );
   });
 };
+
+export const GetRecommendation = (
+  request?: any // Nếu bạn muốn gửi dữ liệu đi trong body, tham số này sẽ được sử dụng
+): Promise<ApiResponse<any>> => {
+  return getRequest<ApiResponse<any>>({
+    url: `${apiUrl}/get-recommendation`, // URL API
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: token ? `Bearer ${token}` : "", // Thêm header Authorization nếu có token
+    },
+  }).catch((e) => {
+    throw new Error(
+      e?.message || "Login failed/Network problem"
+    );
+  });
+};
   
