@@ -78,9 +78,9 @@ const ProductsPage = () => {
 
   return (
     <div className={styles.productsPage}>
-      <div className={styles.sidebar}>
+      {/* <div className={styles.sidebar}>
         <Sidebar />
-      </div>
+      </div> */}
       <div className={styles.contentArea}>
         <h1>Khóa học hiện có</h1>
 

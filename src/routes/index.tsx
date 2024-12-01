@@ -58,7 +58,7 @@ const AppRoutes = () => {
     <Router>
       <Routes>
         <Route path="/login" element={<LoginPage />} />
-        <Route path="/products" element={<ProductsPage />} />
+        {/* <Route path="/products" element={<ProductsPage />} /> */}
         <Route element={<AppLayout />}>
           {/* <Route
             path="/products"
@@ -70,6 +70,7 @@ const AppRoutes = () => {
               // </AccessControl>
             }
           /> */}
+          <Route path="/products" element={<ProductsPage />} />
           <Route
             path="/product/:id"
             element={

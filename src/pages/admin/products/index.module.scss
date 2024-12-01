@@ -30,6 +30,9 @@
 
 .courseCardWrapper {
   flex: 1 1 22%; // 4 items per row in expanded mode
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .courseList::-webkit-scrollbar {
   display: none; // Ẩn scrollbar

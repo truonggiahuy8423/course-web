@@ -28,6 +28,7 @@ import ScheduleList from "../../../../components/ScheduleList";
 import ScheduleSelectComponent from "./components/ScheduleSelectComponent";
 import { createCourse } from "../../../../services/CourseService";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 // import exp from "constants";
 
 // export type Schedule = {
@@ -59,6 +60,7 @@ export type CourseCreateDTO = {
 
 const AdminCoursesCreate = () => {
   const [itemId, setAdminNavigation] = useRecoilState(adminNavigation);
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -99,6 +101,7 @@ const AdminCoursesCreate = () => {
       console.log(res);
       toast.success("Create course successfully");
       setIsLoading(false);
+      navigate("/admin/courses");
     })
     .catch((e) => {
       console.log(e);
