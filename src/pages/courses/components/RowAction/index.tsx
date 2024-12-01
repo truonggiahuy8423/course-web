@@ -38,7 +38,7 @@ const RowAction = (props: Props) => {
       key: "1",
       label: "View",
       icon: <EyeOutlined />,
-      onClick: () => navigate(`/admin/course/${course.courseId}/infor`),
+      onClick: () => navigate(`/course/${course.courseId}/infor`),
     },
     {
       key: "2",

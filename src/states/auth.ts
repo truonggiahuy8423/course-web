@@ -14,6 +14,7 @@ export type User = {
   token: string;
   avatar: string
   role: string;
+  balance: number;
 };
 
 
@@ -31,6 +32,7 @@ export const userState = atom<User | null>({
     token: "",
     avatar: "",
     role: "",
+    balance: 0,
   },
   effects_UNSTABLE: [persistAtom],
 });

@@ -20,7 +20,7 @@ const StudentCourseInfor = () => {
   const isLoading = useRecoilValue(loadingState); // Get loading state
   const user = useRecoilValue(userState); // Get user state
   const isStudent = user?.role === "STUDENT"; // Check if the user is a student
-
+console.log(user?.role);
   const { register, handleSubmit, formState: { errors }, control } = useForm({
     defaultValues: {
       students: [],

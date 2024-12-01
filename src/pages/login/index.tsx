@@ -57,13 +57,16 @@ const LoginPage = () => {
           token: res.data.token,
           avatar: "user_avatar",
           role: res.data.role,
+          balance: res.data.balance
         };
         setUserState(userData);
         localStorage.setItem(userData.avatar, res.data.avatar);
 
         console.log(userData)
-
-        navigate("/courses");
+        if (userData.role == "STUDENT")
+          navigate("/products");
+        else 
+          navigate("/courses");
       })
       .catch((e) => {
         setError(e?.message || "Login failed");
