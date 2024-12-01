@@ -1,29 +1,32 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import styles from "./index.module.scss";
+import { useEffect, useState } from "react";
+import { GetCourseCard } from "../../services/ProductService"; // Đảm bảo import đúng service
 
-const course = {
-  id: 1,
-  image: "https://files.fullstack.edu.vn/f8-prod/courses/7.png",
-  description: "Cho người mới bắt đầu",
-  name: "HTML CSS Pro",
-  price: "1.299.000",
-  userCount: "20000",
-  views: 50,
-  startAt: "22/9/2024",
-  endAt: "20/10/2025",
-  teacher: [
-    {
-      name: "Huỳnh Tấn Phát",
-      birthDate: "01/01/1980",
-      experience: 10,
-    },
-  ],
-};
 const ProductDetail = () => {
   const navigate = useNavigate();
+  const { id } = useParams(); // Lấy id từ URL params
+  const [course, setCourse] = useState(null); // State để lưu khóa học sau khi lấy từ API
+
+  // Lấy khóa học khi component được render lần đầu hoặc id thay đổi
+  useEffect(() => {
+    GetCourseCard().then((res) => {
+      // Tìm khóa học có courseId bằng với id từ params
+      const selectedCourse = res.find(
+        (course) => course.courseId === parseInt(id)
+      );
+      if (selectedCourse) {
+        setCourse(selectedCourse); // Cập nhật state với khóa học tìm được
+      }
+    });
+  }, [id]); // Khi id thay đổi, useEffect sẽ được gọi lại
+
+  if (!course) {
+    return <div>Loading...</div>; // Hiển thị loading khi dữ liệu chưa được tải
+  }
 
   return (
-    <div style={{ height: "100vh", marginTop: "70px" }} className=" container">
+    <div style={{ height: "100vh", marginTop: "70px" }} className="container">
       <div className={styles.buttonGroup}>
         <button className={`${styles.button} ${styles.active}`}>
           <img
@@ -59,22 +62,24 @@ const ProductDetail = () => {
         <div className="col-4">
           <img
             style={{ marginTop: "40px" }}
-            src={course.image}
-            alt={course.name}
+            src={course.thumbnail || "/default-thumbnail.png"} // Kiểm tra nếu không có ảnh thì dùng ảnh mặc định
+            alt={course.subjectName}
             className={styles.courseImage}
           />
         </div>
 
         <div className="col-8 p-5">
-          <h2 className={styles.courseName}>{course.name}</h2>
-          <h4 className={styles.coursePrice}>{course.price}đ</h4>
+          <h2 className={styles.courseName}>{course.subjectName}</h2>
+          <h4 className={styles.coursePrice}>
+            {course.price ? String(course.price) + 'đ' : "Chưa có giá"}
+          </h4>
           <p className={styles.courseDetails}>
             <span className={styles.courseLabel}>Mô tả:</span>{" "}
             {course.description}
           </p>
           <p className={styles.courseDetails}>
             <span className={styles.courseLabel}>Số học viên:</span>{" "}
-            {course.userCount} học viên
+            {course.numberOfStudents} học viên
           </p>
           <div className={styles.metaInfo}>
             <div className={styles.authorInfo}>
@@ -83,36 +88,46 @@ const ProductDetail = () => {
                 alt="author"
                 className={styles.authorImg}
               />
-              Số học viên: <span>{course.userCount}</span>
+              Giảng viên: <span>{course.author || "Chưa có giảng viên"}</span>
             </div>
             <span className={styles.courseStats}>
               <img src="/play.png" alt="author" className={styles.authorImg} />{" "}
-              Số buổi học: {course.views}
+              Số buổi học: {course.numberOfStudents}
             </span>
             <span className={styles.courseDuration}>
               <img src="/clock.png" alt="author" className={styles.authorImg} />{" "}
-              Ngày bắt đầu: {course.startAt}
+              Ngày bắt đầu: {course.startDate.join("/")}
             </span>
             <span className={styles.courseDuration}>
               <img src="/clock.png" alt="author" className={styles.authorImg} />{" "}
-              Ngày kết thúc: {course.endAt}
+              Ngày kết thúc: {course.endDate.join("/")}
             </span>
           </div>
           <div className="mt-4">
             <h5>Thông tin Giảng viên</h5>
             <div className="d-flex gap-5">
-              <p className={styles.courseDetails}>
-                <span className={styles.courseLabel}>Tên:</span>{" "}
-                {course.teacher[0].name}
-              </p>
-              <p className={styles.courseDetails}>
-                <span className={styles.courseLabel}>Ngày sinh:</span>{" "}
-                {course.teacher[0].birthDate}
-              </p>
-              <p className={styles.courseDetails}>
-                <span className={styles.courseLabel}>Số năm kinh nghiệm:</span>{" "}
-                {course.teacher[0].experience} năm
-              </p>
+              {course.lecturers ? (
+                course.lecturers.map((lecturer, index) => (
+                  <div key={index}>
+                    <p className={styles.courseDetails}>
+                      <span className={styles.courseLabel}>Tên:</span>{" "}
+                      {lecturer.name}
+                    </p>
+                    <p className={styles.courseDetails}>
+                      <span className={styles.courseLabel}>Ngày sinh:</span>{" "}
+                      {lecturer.birthDate}
+                    </p>
+                    <p className={styles.courseDetails}>
+                      <span className={styles.courseLabel}>
+                        Số năm kinh nghiệm:
+                      </span>{" "}
+                      {lecturer.experience} năm
+                    </p>
+                  </div>
+                ))
+              ) : (
+                <p className={styles.courseDetails}>Chưa có giảng viên</p>
+              )}
             </div>
           </div>
           <div className="mt-5">
