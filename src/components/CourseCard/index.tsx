@@ -1,7 +1,9 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import styles from './index.module.scss';
 
 interface CourseCardProps {
+  id: number; // Thêm id vào prop để xác định khóa học
   title: string;
   description: string;
   originalPrice: string;
@@ -10,11 +12,12 @@ interface CourseCardProps {
   duration: string;
   author: string;
   backgroundColor?: string;
-  imageUrl: undefined | string; // Image URL hoặc dữ liệu Base64
+  imageUrl: undefined | string ; // Image URL hoặc dữ liệu Base64
   onClick?: () => void;
 }
 
 const CourseCard: React.FC<CourseCardProps> = ({ 
+  id,
   title, 
   description, 
   originalPrice, 
@@ -26,16 +29,25 @@ const CourseCard: React.FC<CourseCardProps> = ({
   imageUrl,
   onClick
 }) => {
+  const navigate = useNavigate();
+
   // Nếu imageUrl là Base64, tạo URL với tiền tố "data:image/png;base64,"
-  const imageSrc:undefined | string   = typeof imageUrl === 'string' && imageUrl.startsWith('iVBOR')
+  const imageSrc: undefined | string = typeof imageUrl === 'string' && imageUrl.startsWith('iVBOR')
     ? `data:image/png;base64,${imageUrl}` // Thêm tiền tố để trình duyệt hiển thị Base64
     : imageUrl; // Nếu là URL hoặc đã có tiền tố, giữ nguyên
+
+  const handleCardClick = () => {
+    if (onClick) {
+      onClick(); // Nếu có onClick, gọi nó
+    }
+    navigate(`/product/${id}`); // Điều hướng đến trang sản phẩm với id
+  };
 
   return (
     <button 
       className={styles.courseCard} 
-      style={{ backgroundColor }}
-      onClick={onClick} 
+      style={{ backgroundColor }} 
+      onClick={handleCardClick} // Xử lý click
     >
       <div className={styles.courseCardImageWrapper}>
         <img src={imageSrc} alt={title} className={styles.courseCardImage} />
