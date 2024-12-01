@@ -69,7 +69,7 @@ const AdminCourses = () => {
       sorterField: "2",
       sorter: true,
       render: (subject) => {
-        return `${subject.subjectId}-${subject.subjectName}`;
+        return `${subject?.subjectId}-${subject?.subjectName}`;
       },
       width: "20%",
       // filters: [
@@ -94,7 +94,7 @@ const AdminCourses = () => {
       sorter: false,
       render: (lecturers) => {
         return lecturers
-          .map((lecturer: Lecturer) => lecturer.username)
+          .map((lecturer: Lecturer) => lecturer?.username)
           .join(", ");
       },
       // width: '',

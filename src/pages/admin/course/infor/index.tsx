@@ -2,14 +2,15 @@ import React, { useEffect, useState } from "react";
 import styles from "./index.module.scss";
 import { Course, Student } from "../../../../interfaces/Course";
 import { useParams } from "react-router-dom";
-import { getCourseDetailsById, getStudentsByCourseId } from "../../../../services/CourseService";
+import {
+  getCourseDetailsById,
+  getStudentsByCourseId,
+} from "../../../../services/CourseService";
 import { toast } from "react-toastify";
 import Table from "./components/DetailTable";
 import ComponentContainer from "../../../../components/ComponentContainer";
 import Label from "../../../../components/Label";
-import DataTable, {
-  ColumnsType,
-} from "../../../../components/DataTable2";
+import DataTable, { ColumnsType } from "../../../../components/DataTable2";
 import ListLecturer from "../../../../components/ListLecturer";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { loadingState } from "../../../../states/loading";
@@ -18,6 +19,7 @@ import FormItem from "../../../../components/FormItem";
 import { CourseCreateFormData } from "../../courses/create";
 import { useForm } from "react-hook-form";
 import dayjs from "dayjs";
+import { Button, Checkbox } from "antd";
 
 const AdminCourseInfor = () => {
   // const {isAdmin} = props;
@@ -41,6 +43,8 @@ const AdminCourseInfor = () => {
   const [sort, setSort] = useState("");
   const [sortDir, setSortDir] = useState("asc");
   const [search, setSearch] = useState("");
+  const [checkedUser, setCheckedUser] = useState<any[]>([]);
+
   const columns: ColumnsType<Student>[] = [
     {
       title: "ID",
@@ -52,16 +56,47 @@ const AdminCourseInfor = () => {
     {
       title: "Name",
       dataIndex: "username",
-      width: "50%",
+      width: "30%",
       sorterField: "2",
+      sorter: true,
+    },
+    {
+      title: "Gender",
+      dataIndex: "gender",
+      width: "10%",
+
+      sorterField: "2",
+      sorter: true,
+    },
+    {
+      title: "Dob",
+      dataIndex: "dob",
+      sorterField: "2",
+      width: "20%",
+
       sorter: true,
     },
     {
       title: "Email",
       dataIndex: "email",
-      width: "",
+
+      width: "20%",
     },
-  ]
+    {
+      render: (row: any) => (
+        <Checkbox
+          onChange={(e) => {
+            e.target.checked
+              ? setCheckedUser([...checkedUser, row.studentId])
+              : setCheckedUser([
+                  ...checkedUser.filter((v) => v !== row.studentId),
+                ]);
+          }}
+          checked={checkedUser.includes(row.studentId)}
+        ></Checkbox>
+      ),
+    },
+  ];
 
   useEffect(() => {
     getCourse();
@@ -80,14 +115,15 @@ const AdminCourseInfor = () => {
         setCourse(res.data);
         // setStudents(res.data.students);
         getStudentsByCourseId({ courseId: id })
-        .then((res) => {
-          setStudents(res.data.students);
-          setTotal(res.data.total);
-          setIsLoading(false);
-        }).catch((err) => {
-          toast.error(err);
-          setIsLoading(false);
-        });
+          .then((res) => {
+            setStudents(res.data.students);
+            setTotal(res.data.total);
+            setIsLoading(false);
+          })
+          .catch((err) => {
+            toast.error(err);
+            setIsLoading(false);
+          });
       })
       .catch((err) => {
         toast.error(err);
@@ -107,42 +143,65 @@ const AdminCourseInfor = () => {
     return <div className={styles.contentSection}>Course not found</div>;
   }
 
-  return <div className={styles.contentSection}>
+  return (
+    <div className={styles.contentSection}>
+      <ComponentContainer
+        justifyContent="left"
+        padding={{ left: "20px", top: "20px" }}
+      >
+        <Label text="Information" fontSize="medium"></Label>
+      </ComponentContainer>
+      <Table course={course} isAdmin />
+      <ComponentContainer
+        justifyContent="left"
+        padding={{ left: "20px", top: "20px" }}
+      >
+        <div style={{ display: "flex", alignItems: "center", gap: "20px" }}>
+          {" "}
+          <Label text="Lecturers" fontSize="medium"></Label>{" "}
+          <Button>
+            <b>+</b>
+          </Button>
+        </div>
+      </ComponentContainer>
+      <ListLecturer lecturers={course ? course.lecturers : []} />
 
-    <ComponentContainer justifyContent="left" padding={{left: "20px", top: "20px"}}>
-      <Label text="Information" fontSize="medium"></Label>
-    </ComponentContainer>
-    <Table course={course} isAdmin/>
-    <ComponentContainer justifyContent="left" padding={{left: "20px", top: "20px"}}>
-      <Label text="Lecturers" fontSize="medium"></Label>
-    </ComponentContainer>
-    <ListLecturer lecturers={course ? course.lecturers : []}/>
+      <FormItem>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            width: "100%",
+            justifyContent: "space-between",
+          }}
+        >
+          {" "}
+          <ChooseStudentModal
+            name="students"
+            control={control}
+            courseId={id || ""}
+            onModalClose={() => setModalChanged((prev) => !prev)} // Toggle state
+          />
+          <Button style={{ width: "fit-content", marginTop: 20 }}>Xoá</Button>
+        </div>
+      </FormItem>
 
-    <FormItem>
-<ChooseStudentModal
-  name="students"
-  control={control}
-  courseId={id || ""}
-  onModalClose={() => setModalChanged((prev) => !prev)} // Toggle state
-/>
-
-    </FormItem>
-
-    <DataTable<Student>
-                dataSource={students}
-                paramsState={{
-                  setPage: setPage,
-                  setPageSize: setPageSize,
-                  setSort,
-                  setSortDir,
-                  setSearch,
-                }}
-                page={page}
-                pageSize={pageSize}
-                total={total}
-                columns={columns}
-              />
-  </div>;
+      <DataTable<Student>
+        dataSource={students}
+        paramsState={{
+          setPage: setPage,
+          setPageSize: setPageSize,
+          setSort,
+          setSortDir,
+          setSearch,
+        }}
+        page={page}
+        pageSize={pageSize}
+        total={total}
+        columns={columns}
+      />
+    </div>
+  );
 };
 
 export default AdminCourseInfor;
