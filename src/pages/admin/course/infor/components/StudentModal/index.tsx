@@ -1,14 +1,21 @@
 import React, { useEffect, useState } from "react";
-import { Modal } from "antd";
+import { Button, Modal } from "antd";
 import { useForm, Controller } from "react-hook-form";
-import Button from "../../../../../../components/Button";
+// import Button from "../../../../../../components/Button";
 import { EditOutlined } from "@ant-design/icons";
-import DataTable, { ColumnsType } from "../../../../../../components/DataTable2";
+import DataTable, {
+  ColumnsType,
+} from "../../../../../../components/DataTable2";
 import ComponentContainer from "../../../../../../components/ComponentContainer";
 import Label from "../../../../../../components/Label";
 import { useSetRecoilState } from "recoil";
 import { loadingState } from "../../../../../../states/loading";
-import { getStudentsByCourseId, getStudentList, updateStudentInCourses,getStudentsNotPageable } from "../../../../../../services/CourseService";
+import {
+  getStudentsByCourseId,
+  getStudentList,
+  updateStudentInCourses,
+  getStudentsNotPageable,
+} from "../../../../../../services/CourseService";
 import { toast } from "react-toastify";
 import { Student } from "../../../../../../interfaces/Course";
 
@@ -44,7 +51,7 @@ export const ChooseStudentModal = (prop: Props) => {
           const [sortDir, setSortDir] = useState("asc");
           const [search, setSearch] = useState("");
           const [fullStudent, setFullStudent] = useState<Student[]>([]);
-          const [students2, setStudents2] = useState<Student[]>([]); 
+          const [students2, setStudents2] = useState<Student[]>([]);
           const [total2, setTotal2] = useState(0);
           const [page2, setPage2] = useState("1");
           const [pageSize2, setPageSize2] = useState("6");
@@ -94,12 +101,11 @@ export const ChooseStudentModal = (prop: Props) => {
               const res = await getStudentsNotPageable(params); // Gọi API với chỉ courseId
               setFullStudent(res.data); // Set danh sách sinh viên vào fullStudent
               console.log("API Response:", res.data);
-              console.log(fullStudent)
+              console.log(fullStudent);
             } catch (err) {
               toast.error("Failed to fetch full student list");
             }
           };
-          
 
           const fetchAvailableStudents = async () => {
             const params = {
@@ -123,7 +129,10 @@ export const ChooseStudentModal = (prop: Props) => {
           const fetchData = async () => {
             try {
               console.log("Fetching data...");
-              await Promise.all([fetchPickedStudents(), fetchAvailableStudents()]);
+              await Promise.all([
+                fetchPickedStudents(),
+                fetchAvailableStudents(),
+              ]);
               console.log("Data fetched successfully.");
             } catch (err) {
               console.error("Error fetching data:", err);
@@ -141,11 +150,10 @@ export const ChooseStudentModal = (prop: Props) => {
 
           useEffect(() => {
             fetchAvailableStudents();
-
           }, [page, pageSize, sort, sortDir, search]);
           useEffect(() => {
             fetchPickedStudents();
-            console.log("Call reset")
+            console.log("Call reset");
           }, [page2, pageSize2, sort, sortDir, search]);
           useEffect(() => {
             fetchPickedStudents();
@@ -183,18 +191,22 @@ export const ChooseStudentModal = (prop: Props) => {
             {
               title: "Action",
               render: (_, record) => {
-                const isSelected = fullStudent.some((student) => student.studentId === record.studentId);
+                const isSelected = fullStudent.some(
+                  (student) => student.studentId === record.studentId
+                );
                 return (
                   <input
                     type="checkbox"
                     checked={isSelected}
                     onChange={(e) => {
                       setFullStudent((prev) => {
-                        let newList = fullStudent ;
+                        let newList = fullStudent;
                         if (e.target.checked) {
                           newList = [...prev, record]; // Add student to tempList
                         } else {
-                          newList = prev.filter((student) => student.studentId !== record.studentId); // Remove student from tempList
+                          newList = prev.filter(
+                            (student) => student.studentId !== record.studentId
+                          ); // Remove student from tempList
                         }
                         console.log("Updated tempList:", newList); // Log tempList each time it changes
                         return newList;
@@ -209,23 +221,35 @@ export const ChooseStudentModal = (prop: Props) => {
 
           return (
             <div style={{ width: "100%" }}>
-              <ComponentContainer justifyContent="left" padding={{ bottom: "10px" }}>
-                <ComponentContainer justifyContent="left" padding={{ left: "20px", top: "20px" }}>
-                  <Label text="Students" fontSize="medium"></Label>
-                </ComponentContainer>
-                <Button
-                  type="button"
+              <div style={{ width: "100%" }}>
+                <div
                   style={{
-                    width: "40px",
-                    height: "40px",
-                    marginLeft: "14px",
-                    padding: "0px",
+                    display: "flex",
+                    alignItems: "center",
+                    width: "90%",
                   }}
-                  onClick={showModal}
                 >
-                  <EditOutlined />
-                </Button>
-              </ComponentContainer>
+                  <ComponentContainer
+                    justifyContent="left"
+                    padding={{ left: "20px", top: "20px" }}
+                  >
+                    <Label text="Students" fontSize="medium"></Label>
+                  </ComponentContainer>
+                  <Button
+                    // type="button"
+                    // style={{
+                    //   width: "40px",
+                    //   height: "40px",
+                    //   marginLeft: "14px",
+                    //   padding: "0px",
+                    // }}
+                    style={{ marginTop: 20, marginLeft: 1000 }}
+                    onClick={showModal}
+                  >
+                    Thêm
+                  </Button>
+                </div>
+              </div>
               <Modal
                 style={{ top: 60 }}
                 title="Manage Students"
@@ -234,7 +258,7 @@ export const ChooseStudentModal = (prop: Props) => {
                   try {
                     const requestBody = {
                       courseId,
-                      students: fullStudent.map(student => student.studentId), // List of studentIds
+                      students: fullStudent.map((student) => student.studentId), // List of studentIds
                     };
                     console.log("Request Body:", requestBody);
                     await updateStudentInCourses(requestBody);

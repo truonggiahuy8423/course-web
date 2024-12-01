@@ -69,7 +69,7 @@ const AdminCourses = () => {
       sorterField: "2",
       sorter: true,
       render: (subject) => {
-        return `${subject.subjectId}-${subject.subjectName}`;
+        return `${subject?.subjectId}-${subject?.subjectName}`;
       },
       width: "20%",
       // filters: [
