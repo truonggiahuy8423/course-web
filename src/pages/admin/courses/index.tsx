@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import AppLayout from "../../../layout/AppLayout";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import Button from "../../../components/Button";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { adminNavigation } from "../../../states/adminNavigation";
 import Pagination from "../../../components/Pagination";
 import DataTable from "./components/DataTable";
@@ -18,7 +18,12 @@ import RowAction from "./components/RowAction";
 import ComponentContainer from "../../../components/ComponentContainer";
 import Input from "../../../components/Input";
 import SearchInput from "../../../components/SearchInput";
-import { Course, GetCoursesResponse, Lecturer } from "../../../interfaces/Course";
+import {
+  Course,
+  GetCoursesResponse,
+  Lecturer,
+} from "../../../interfaces/Course";
+import { userState } from "../../../states/auth";
 
 export type Props = {
   data: Course[];
@@ -38,8 +43,10 @@ const AdminCourses = () => {
   const [total, setTotal] = useState(0);
   const setIsLoading = useSetRecoilState(loadingState);
   const [itemId, setAdminNavigation] = useRecoilState(adminNavigation);
+  const userInfo = useRecoilValue(userState);
 
   useEffect(() => {
+    console.log(userInfo);
     setAdminNavigation(1);
   }, []);
   //   const queryParams = new URLSearchParams(location.search);
@@ -52,7 +59,7 @@ const AdminCourses = () => {
   // }, []);
 
   useEffect(() => {
-    getCourseList();
+    getCourseList(userInfo?.userId);
   }, [location.search]);
 
   const columns: ColumnsType<Course>[] = [
@@ -133,7 +140,7 @@ const AdminCourses = () => {
         return (
           <RowAction
             course={record}
-            afterDone={() => getCourseList()}
+            afterDone={() => getCourseList(userInfo?.userId)}
           ></RowAction>
         );
       },
@@ -141,7 +148,7 @@ const AdminCourses = () => {
     },
   ];
 
-  const getCourseList = async () => {
+  const getCourseList = async (userId: number) => {
     setIsLoading(true);
 
     const queryParams = new URLSearchParams(location.search);
@@ -157,6 +164,7 @@ const AdminCourses = () => {
       pageSize: Number(pageSize),
       sort,
       sortDir,
+      userId,
     };
 
     console.log(params);
