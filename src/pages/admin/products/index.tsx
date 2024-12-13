@@ -176,7 +176,8 @@ const ProductsPage = () => {
           {recommendation.map((course) => (
             <div key={course.id} className={styles.courseCardWrapper}>
               <CourseCard
-                imageUrl={course.imageUrl} // Chuyển qua byte array hoặc URL
+                id={course.id}
+                imageUrl={String(course.imageUrl)} // Chuyển qua byte array hoặc URL
                 title={course.title}
                 description={course.description}
                 originalPrice={course.originalPrice}

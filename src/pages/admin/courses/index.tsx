@@ -59,7 +59,7 @@ const AdminCourses = () => {
   // }, []);
 
   useEffect(() => {
-    getCourseList(userInfo?.userId);
+    getCourseList(Number(userInfo?.userId));
   }, [location.search]);
 
   const columns: ColumnsType<Course>[] = [
@@ -140,7 +140,7 @@ const AdminCourses = () => {
         return (
           <RowAction
             course={record}
-            afterDone={() => getCourseList(userInfo?.userId)}
+            afterDone={() => getCourseList(Number(userInfo?.userId))}
           ></RowAction>
         );
       },

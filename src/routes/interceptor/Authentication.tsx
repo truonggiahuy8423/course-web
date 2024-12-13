@@ -1,7 +1,6 @@
 import React from "react";
 import { Navigate } from "react-router-dom";
 
-
 // Component PrivateRoute để kiểm tra token
 const Authentication = ({ children }: { children: React.ReactNode }) => {
   const token = localStorage.getItem("token"); // Lấy token từ localStorage
@@ -12,7 +11,7 @@ const Authentication = ({ children }: { children: React.ReactNode }) => {
   }
 
   // Nếu có token, cho phép truy cập vào route
-  return children;
+  return <div>{children}</div>;
 };
 
 export default Authentication;

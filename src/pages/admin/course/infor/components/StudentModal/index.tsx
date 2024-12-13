@@ -98,7 +98,7 @@ export const ChooseStudentModal = (prop: Props) => {
               courseId,
             };
             try {
-              const res = await getStudentsNotPageable(params); // Gọi API với chỉ courseId
+              const res: any = await getStudentsNotPageable(params); // Gọi API với chỉ courseId
               setFullStudent(res.data); // Set danh sách sinh viên vào fullStudent
               console.log("API Response:", res.data);
               console.log(fullStudent);
